@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(\"C:/Users/HP/Personal work/phantom-realtors/resources/views/admin/merchants/index.blade.php\":*)",
+      "Bash(\"C:/Users/HP/Personal work/phantom-realtors/resources/views/admin/payments/index.blade.php\":*)",
+      "Bash(\"C:/Users/HP/Personal work/phantom-realtors/resources/views/admin/orders/index.blade.php\":*)",
+      "Bash(\"C:/Users/HP/Personal work/phantom-realtors/resources/views/admin/orders/show.blade.php\":*)",
+      "Bash(\"C:/Users/HP/Personal work/phantom-realtors/resources/views/admin/users/index.blade.php\":*)",
+      "Bash(\"C:/Users/HP/Personal work/phantom-realtors/resources/views/admin/inquiries/index.blade.php\":*)",
+      "Bash(\"C:/Users/HP/Personal work/phantom-realtors/resources/views/admin/inquiries/show.blade.php\":*)",
+      "Bash(\"C:/Users/HP/Personal work/phantom-realtors/resources/views/customer/orders/index.blade.php\":*)",
+      "Bash(\"C:/Users/HP/Personal work/phantom-realtors/resources/views/customer/orders/show.blade.php\":*)",
+      "Bash(composer require:*)",
+      "Bash(\"C:/Users/HP/Personal work/phantom-realtors/app/Http/Controllers/BecomeMerchantController.php\":*)",
+      "Bash(\"C:/Users/HP/Personal work/phantom-realtors/resources/views/become-seller.blade.php\":*)",
+      "Bash(composer dump-autoload:*)",
+      "Bash(php artisan migrate:*)",
+      "Bash(php artisan:*)",
+      "Bash(php artisan view:clear:*)",
+      "Bash(php artisan config:clear:*)",
+      "Bash(npm run build:*)",
+      "Bash(git init:*)",
+      "Bash(git remote add:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
+    ]
+  }
+}
