@@ -3,7 +3,7 @@
         <div class="flex justify-between h-16">
             <div class="flex items-center">
                 <a href="{{ route('home') }}" class="text-xl font-bold text-amber-500">
-                    Phantom Realtors
+                    Phantom 5 Realtors
                 </a>
 
                 <div class="hidden sm:flex sm:ml-10 sm:space-x-6">

@@ -7,7 +7,7 @@
         <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                 <div class="p-6 border-b border-gray-100">
-                    <h3 class="text-lg font-bold text-slate-900">Start Selling on Phantom Realtors</h3>
+                    <h3 class="text-lg font-bold text-slate-900">Start Selling on Phantom 5 Realtors</h3>
                     <p class="text-sm text-gray-500 mt-1">List your properties, products, or services and reach thousands of buyers.</p>
                 </div>
 

@@ -2,7 +2,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-                <h4 class="text-amber-500 text-lg font-bold mb-4">Phantom Realtors</h4>
+                <h4 class="text-amber-500 text-lg font-bold mb-4">Phantom 5 Realtors</h4>
                 <p class="text-sm">Your one-stop destination for quality homes, building solutions, and modern living.</p>
             </div>
             <div>
@@ -32,7 +32,7 @@
             </div>
         </div>
         <div class="mt-10 pt-6 border-t border-slate-800 text-center text-sm">
-            <p>&copy; {{ date('Y') }} Phantom Realtors. All rights reserved.</p>
+            <p>&copy; {{ date('Y') }} Phantom 5 Realtors. All rights reserved.</p>
         </div>
     </div>
 </footer>

@@ -19,7 +19,7 @@
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden" id="printable-receipt">
                 {{-- Print-only header --}}
                 <div class="hidden print:block text-center border-b-2 border-amber-500 pb-6 mb-6 p-6">
-                    <h1 class="text-2xl font-extrabold text-amber-600">Phantom Realtors</h1>
+                    <h1 class="text-2xl font-extrabold text-amber-600">Phantom 5 Realtors</h1>
                     <p class="text-gray-500 text-sm">Payment Receipt</p>
                 </div>
 
@@ -123,7 +123,7 @@
 
                 {{-- Print-only footer --}}
                 <div class="hidden print:block text-center border-t border-gray-200 p-6">
-                    <p class="text-sm font-semibold text-slate-900">Phantom Realtors</p>
+                    <p class="text-sm font-semibold text-slate-900">Phantom 5 Realtors</p>
                     <p class="text-xs text-gray-500 mt-1">Thank you for your purchase!</p>
                     <p class="text-xs text-gray-400 mt-1">This is a computer-generated receipt and does not require a signature.</p>
                 </div>
