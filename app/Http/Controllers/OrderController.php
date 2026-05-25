@@ -49,7 +49,11 @@ class OrderController extends Controller
 
         // Notify merchant of new order
         $order->load(['customer', 'items']);
-        $order->merchant->notify(new NewOrderNotification($order));
+        try {
+            $order->merchant->notify(new NewOrderNotification($order));
+        } catch (\Throwable $e) {
+            report($e);
+        }
 
         return redirect()->route('customer.orders.show', $order)
             ->with('success', 'Order placed successfully. Please submit payment.');
@@ -57,7 +61,7 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
-        abort_unless($order->customer_id === auth()->id(), 403);
+        abort_unless(auth()->user()->isAdmin() || $order->customer_id === auth()->id(), 403);
 
         $order->load(['merchant.merchantProfile', 'items.itemable', 'payment']);
 
@@ -69,7 +73,7 @@ class OrderController extends Controller
 
     public function submitPayment(SubmitPaymentProofRequest $request, Order $order)
     {
-        abort_unless($order->customer_id === auth()->id(), 403);
+        abort_unless(auth()->user()->isAdmin() || $order->customer_id === auth()->id(), 403);
 
         $data = $request->validated();
 
@@ -90,7 +94,7 @@ class OrderController extends Controller
 
     public function cancel(Order $order)
     {
-        abort_unless($order->customer_id === auth()->id(), 403);
+        abort_unless(auth()->user()->isAdmin() || $order->customer_id === auth()->id(), 403);
 
         $canCancel = $order->status === OrderStatus::Pending
             && (!$order->payment || $order->payment->payment_status !== PaymentStatus::Confirmed);
