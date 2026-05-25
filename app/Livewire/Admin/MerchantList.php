@@ -18,7 +18,7 @@ class MerchantList extends Component
     public string $search = '';
 
     #[Url]
-    public string $status = '';
+    public string $status = 'approved';
 
     public function updatingSearch(): void
     {
