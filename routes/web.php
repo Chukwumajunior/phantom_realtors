@@ -78,7 +78,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // =============================================
 // CUSTOMER ROUTES
 // =============================================
-Route::middleware(['auth', 'verified', 'role:customer,merchant'])->prefix('customer')->name('customer.')->group(function () {
+Route::middleware(['auth', 'verified', 'role:customer,merchant,admin'])->prefix('customer')->name('customer.')->group(function () {
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
