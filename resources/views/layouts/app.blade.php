@@ -8,6 +8,8 @@
         <link rel="icon" href="{{ asset('img/logo.png') }}" type="image/png">
         <title>{{ config('app.name', 'Phantom 5') }}</title>
 
+        <meta name="google-site-verification" content="-BN82NPoZZhI0LtHIOs4zKO6nLche_Nw9ITg0m760p0" />
+
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=plus-jakarta-sans:400,500,600,700,800&display=swap" rel="stylesheet" />
 
