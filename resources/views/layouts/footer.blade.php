@@ -4,6 +4,11 @@
             <div>
                 <h4 class="text-amber-500 text-lg font-bold mb-4">Phantom 5</h4>
                 <p class="text-sm">Your one-stop destination for quality homes, building solutions, and modern living.</p>
+                <div class="mt-5 pt-3 border-t border-slate-800 text-sm">
+                    @auth
+                        <a href="{{ route('user-guide') }}" class="text-gray-500 hover:text-amber-500 transition mt-1 inline-block">How to use Phantom 5</a>
+                    @endauth
+                </div>
             </div>
             <div>
                 <h4 class="text-white text-sm font-semibold uppercase mb-4">Explore</h4>
@@ -33,9 +38,6 @@
         </div>
         <div class="mt-10 pt-6 border-t border-slate-800 text-center text-sm">
             <p>&copy; {{ date('Y') }} Phantom 5. All rights reserved.</p>
-            @auth
-                <a href="{{ route('user-guide') }}" class="text-gray-500 hover:text-amber-500 transition mt-1 inline-block">How to use Phantom 5</a>
-            @endauth
         </div>
     </div>
 </footer>
