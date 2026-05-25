@@ -21,9 +21,63 @@ class MerchantDetail extends Component
     public string $message = '';
     public string $messageType = '';
 
+    // Editable fields
+    public bool $editing = false;
+    public string $ownerName = '';
+    public string $businessName = '';
+    public string $businessPhone = '';
+    public string $businessAddress = '';
+    public string $businessDescription = '';
+
     public function mount(MerchantProfile $merchantProfile): void
     {
         $this->merchantProfile = $merchantProfile->load('user', 'subscriptionPlan');
+        $this->loadEditableFields();
+    }
+
+    private function loadEditableFields(): void
+    {
+        $this->ownerName = $this->merchantProfile->user->name ?? '';
+        $this->businessName = $this->merchantProfile->business_name ?? '';
+        $this->businessPhone = $this->merchantProfile->business_phone ?? '';
+        $this->businessAddress = $this->merchantProfile->business_address ?? '';
+        $this->businessDescription = $this->merchantProfile->business_description ?? '';
+    }
+
+    public function toggleEdit(): void
+    {
+        $this->editing = !$this->editing;
+        if ($this->editing) {
+            $this->loadEditableFields();
+        }
+    }
+
+    public function saveMerchant(): void
+    {
+        $this->validate([
+            'ownerName' => 'required|string|max:255',
+            'businessName' => 'required|string|max:255',
+            'businessPhone' => 'nullable|string|max:20',
+            'businessAddress' => 'nullable|string|max:500',
+            'businessDescription' => 'nullable|string|max:2000',
+        ]);
+
+        $this->merchantProfile->user->update([
+            'name' => $this->ownerName,
+        ]);
+
+        $this->merchantProfile->update([
+            'business_name' => $this->businessName,
+            'business_phone' => $this->businessPhone,
+            'business_address' => $this->businessAddress,
+            'business_description' => $this->businessDescription,
+        ]);
+
+        $this->merchantProfile->refresh();
+        $this->merchantProfile->load('user', 'subscriptionPlan');
+        $this->editing = false;
+        $this->message = 'Merchant details updated successfully.';
+        $this->messageType = 'success';
     }
 
     public function approve(): void
