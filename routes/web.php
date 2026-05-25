@@ -147,7 +147,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::patch('/users/{user}/unsuspend', [Admin\UserManagementController::class, 'unsuspend'])->name('users.unsuspend');
 
     // Merchant Approvals
-    Route::get('/merchants', [Admin\MerchantApprovalController::class, 'index'])->name('merchants.index');
+    Route::get('/merchants', \App\Livewire\Admin\MerchantList::class)->name('merchants.index');
     Route::get('/merchants/{merchantProfile}', \App\Livewire\Admin\MerchantDetail::class)->name('merchants.show');
 
     // Payment Confirmations
