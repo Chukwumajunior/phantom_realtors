@@ -1,6 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="text-2xl font-bold text-slate-900">Orders</h2>
+        <div class="flex items-center gap-3">
+            <a wire:navigate href="{{ route('merchant.dashboard') }}" class="text-gray-500 hover:text-slate-900 transition" title="Back to Dashboard">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            </a>
+            <h2 class="text-2xl font-bold text-slate-900">Orders</h2>
+        </div>
     </x-slot>
 
     <div class="py-8">

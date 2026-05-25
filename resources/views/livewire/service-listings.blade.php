@@ -1,16 +1,43 @@
 <div>
     <!-- Filters -->
-    <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div class="bg-white rounded-xl shadow-sm p-4 sm:p-6 mb-8"
+         x-data="{
+             hierarchy: @js($hierarchy),
+             group: @entangle('group'),
+             category: @entangle('category'),
+             get filteredCategories() {
+                 if (!this.group) return [];
+                 const found = this.hierarchy.find(g => g.value === this.group);
+                 return found ? found.categories : [];
+             }
+         }"
+    >
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
             <div>
                 <input wire:model.live.debounce.300ms="search" type="text" placeholder="Search services..." class="w-full border-gray-300 rounded-lg text-sm focus:border-amber-500 focus:ring-amber-500">
             </div>
             <div>
-                <select wire:model.live="category" class="w-full border-gray-300 rounded-lg text-sm focus:border-amber-500 focus:ring-amber-500">
-                    <option value="">All Categories</option>
-                    @foreach($categories as $cat)
-                        <option value="{{ $cat->value }}">{{ $cat->label() }}</option>
-                    @endforeach
+                <select x-model="group" class="w-full border-gray-300 rounded-lg text-sm focus:border-amber-500 focus:ring-amber-500">
+                    <option value="">All Service Groups</option>
+                    <template x-for="g in hierarchy" :key="g.value">
+                        <option :value="g.value" x-text="g.label"></option>
+                    </template>
+                </select>
+            </div>
+            <div>
+                <select x-model="category" :disabled="!group" class="w-full border-gray-300 rounded-lg text-sm focus:border-amber-500 focus:ring-amber-500 disabled:opacity-50 disabled:bg-gray-50">
+                    <option value="">All in group</option>
+                    <template x-for="c in filteredCategories" :key="c.value">
+                        <option :value="c.value" x-text="c.label"></option>
+                    </template>
+                </select>
+            </div>
+            <div>
+                <select wire:model.live="sortBy" class="w-full border-gray-300 rounded-lg text-sm focus:border-amber-500 focus:ring-amber-500">
+                    <option value="latest">Latest</option>
+                    <option value="price_asc">Price: Low to High</option>
+                    <option value="price_desc">Price: High to Low</option>
+                    <option value="oldest">Oldest</option>
                 </select>
             </div>
             <div>
@@ -41,6 +68,7 @@
                 </a>
                 <div class="p-4">
                     <h3 class="font-semibold text-gray-900 truncate">{{ $service->name }}</h3>
+                    <p class="text-xs text-gray-400 mt-0.5">{{ $service->category->group()->label() }}</p>
                     <p class="text-sm text-gray-500 mt-1 line-clamp-2">{{ Str::limit($service->description, 80) }}</p>
                     <div class="flex items-center justify-between mt-3">
                         <p class="text-sm font-bold text-amber-600">{{ $service->price_range }}</p>

@@ -8,7 +8,7 @@ class UpdateMerchantRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()->isMerchant();
+        return $this->user()->isMerchant() || $this->user()->isAdmin();
     }
 
     public function rules(): array

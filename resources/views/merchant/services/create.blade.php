@@ -11,41 +11,81 @@
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                     <h3 class="text-lg font-bold text-slate-900 mb-6">Service Information</h3>
 
-                    <div class="space-y-6">
-                        <div>
-                            <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Service Name</label>
-                            <input type="text" id="name" name="name" value="{{ old('name') }}" required class="w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500">
-                            @error('name') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                    <div class="space-y-6" x-data="{
+                        hierarchy: @js(\App\Enums\ServiceGroup::hierarchy()),
+                        selectedGroup: '',
+                        selectedCategory: '{{ old('category', '') }}',
+                        description: '{{ old('description', '') }}',
+                        descriptionModified: {{ old('description') ? 'true' : 'false' }},
+                        get filteredCategories() {
+                            if (!this.selectedGroup) return [];
+                            const found = this.hierarchy.find(g => g.value === this.selectedGroup);
+                            return found ? found.categories : [];
+                        },
+                        getDefaultDescription(value) {
+                            for (const g of this.hierarchy) {
+                                const cat = g.categories.find(c => c.value === value);
+                                if (cat) return cat.description;
+                            }
+                            return '';
+                        },
+                        init() {
+                            if (this.selectedCategory) {
+                                for (const g of this.hierarchy) {
+                                    if (g.categories.some(c => c.value === this.selectedCategory)) {
+                                        this.selectedGroup = g.value;
+                                        break;
+                                    }
+                                }
+                            }
+                            this.$watch('selectedCategory', (value) => {
+                                if (value) {
+                                    this.description = this.getDefaultDescription(value);
+                                    this.descriptionModified = false;
+                                }
+                            });
+                        }
+                    }">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Service Group</label>
+                                <select x-model="selectedGroup" @change="selectedCategory = ''" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500">
+                                    <option value="">Select Group</option>
+                                    <template x-for="g in hierarchy" :key="g.value">
+                                        <option :value="g.value" x-text="g.label"></option>
+                                    </template>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Service Name</label>
+                                <select x-model="selectedCategory" name="category" required :disabled="!selectedGroup" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 disabled:opacity-50 disabled:bg-gray-50">
+                                    <option value="">Select Service</option>
+                                    <template x-for="c in filteredCategories" :key="c.value">
+                                        <option :value="c.value" x-text="c.label"></option>
+                                    </template>
+                                </select>
+                                @error('category') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                            </div>
                         </div>
 
                         <div>
                             <label for="description" class="block text-sm font-medium text-gray-700 mb-2">Description</label>
-                            <textarea id="description" name="description" rows="5" required class="w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500">{{ old('description') }}</textarea>
+                            <textarea id="description" name="description" rows="5" required x-model="description" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500">{{ old('description') }}</textarea>
+                            <p class="mt-1 text-sm text-gray-500">A default description is provided when you select a service name. You can modify it.</p>
                             @error('description') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                         </div>
 
-                        <div>
-                            <label for="category" class="block text-sm font-medium text-gray-700 mb-2">Category</label>
-                            <select id="category" name="category" required class="w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500">
-                                <option value="">Select Category</option>
-                                @foreach(\App\Enums\ServiceCategory::cases() as $category)
-                                    <option value="{{ $category->value }}" {{ old('category') === $category->value ? 'selected' : '' }}>{{ $category->label() }}</option>
-                                @endforeach
-                            </select>
-                            @error('category') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
-                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Currency</label>
+                                <select name="currency" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500">
+                                    @foreach(\App\Enums\Currency::cases() as $curr)
+                                        <option value="{{ $curr->value }}" {{ old('currency', config('app.currency')) === $curr->value ? 'selected' : '' }}>{{ $curr->value }} ({{ $curr->symbol() }})</option>
+                                    @endforeach
+                                </select>
+                                @error('currency') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                            </div>
 
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Currency</label>
-                            <select name="currency" class="rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 w-40">
-                                @foreach(\App\Enums\Currency::cases() as $curr)
-                                    <option value="{{ $curr->value }}" {{ old('currency', config('app.currency')) === $curr->value ? 'selected' : '' }}>{{ $curr->value }} ({{ $curr->symbol() }})</option>
-                                @endforeach
-                            </select>
-                            @error('currency') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label for="price_from" class="block text-sm font-medium text-gray-700 mb-2">Price From</label>
                                 <input type="number" id="price_from" name="price_from" value="{{ old('price_from') }}" step="0.01" required class="w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500">

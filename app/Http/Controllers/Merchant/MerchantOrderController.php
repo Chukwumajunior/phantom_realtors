@@ -27,7 +27,7 @@ class MerchantOrderController extends Controller
 
     public function show(Order $order)
     {
-        abort_unless($order->merchant_id === auth()->id(), 403);
+        abort_unless(auth()->user()->isAdmin() || $order->merchant_id === auth()->id(), 403);
 
         $order->load(['customer', 'items.itemable', 'payment']);
 
@@ -55,7 +55,7 @@ class MerchantOrderController extends Controller
 
     public function updateStatus(Request $request, Order $order)
     {
-        abort_unless($order->merchant_id === auth()->id(), 403);
+        abort_unless(auth()->user()->isAdmin() || $order->merchant_id === auth()->id(), 403);
 
         // Prevent status change once order is confirmed/processing/completed
         if (in_array($order->status->value, ['confirmed', 'processing', 'completed'])) {

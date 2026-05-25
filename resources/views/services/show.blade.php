@@ -8,9 +8,9 @@
             <!-- Full-width Image Gallery -->
             <div class="mb-8" x-data="{ activeImage: 0, total: {{ $service->images->count() ?: 1 }} }">
                 @if($service->images->count() > 0)
-                <div class="relative w-full rounded-2xl overflow-hidden bg-gray-100">
+                <div class="relative w-full h-[300px] sm:h-[400px] lg:h-[500px] rounded-2xl overflow-hidden bg-gray-100">
                     @foreach($service->images->take(4) as $index => $image)
-                        <img x-show="activeImage === {{ $index }}" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" src="{{ $image->url }}" class="w-full h-[300px] sm:h-[400px] lg:h-[500px] object-cover" alt="{{ $service->name }}">
+                        <img x-show="activeImage === {{ $index }}" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" src="{{ $image->url }}" class="absolute inset-0 w-full h-full object-cover" alt="{{ $service->name }}">
                     @endforeach
 
                     @if($service->images->count() > 1)
@@ -42,7 +42,10 @@
                 <!-- Service Info (Left) -->
                 <div class="lg:col-span-2 space-y-6">
                     <div>
-                        <span class="inline-block bg-emerald-600 text-white text-xs font-medium px-3 py-1 rounded-full mb-3">{{ $service->category->label() }}</span>
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span class="inline-block bg-gray-200 text-gray-700 text-xs font-medium px-3 py-1 rounded-full">{{ $service->category->group()->label() }}</span>
+                            <span class="inline-block bg-emerald-600 text-white text-xs font-medium px-3 py-1 rounded-full">{{ $service->category->label() }}</span>
+                        </div>
                         <h1 class="text-2xl sm:text-3xl font-bold text-slate-900">{{ $service->name }}</h1>
                     </div>
 
@@ -96,8 +99,8 @@
                     <div class="bg-white border border-gray-200 rounded-2xl p-5">
                         <h3 class="text-lg font-bold text-slate-900 mb-3">Provided By</h3>
                         <div class="flex items-center gap-3 mb-4">
-                            @if($service->merchant->merchantProfile && $service->merchant->merchantProfile->logo)
-                                <img src="{{ asset('storage/' . $service->merchant->merchantProfile->logo) }}" class="w-12 h-12 rounded-full object-cover" alt="Merchant">
+                            @if($service->merchant->avatar)
+                                <img src="{{ str_starts_with($service->merchant->avatar, 'http') ? $service->merchant->avatar : asset('storage/' . $service->merchant->avatar) }}" class="w-12 h-12 rounded-full object-cover" alt="{{ $service->merchant->name }}">
                             @else
                                 <div class="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center">
                                     <span class="text-amber-600 font-bold text-lg">{{ substr($service->merchant->name, 0, 1) }}</span>

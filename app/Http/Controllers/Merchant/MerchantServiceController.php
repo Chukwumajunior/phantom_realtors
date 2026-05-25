@@ -47,7 +47,7 @@ class MerchantServiceController extends Controller
 
     public function edit(Service $service)
     {
-        abort_unless($service->user_id === auth()->id(), 403);
+        abort_unless(auth()->user()->isAdmin() || $service->user_id === auth()->id(), 403);
         $service->load('images');
 
         return view('merchant.services.edit', compact('service'));
@@ -71,7 +71,7 @@ class MerchantServiceController extends Controller
 
     public function destroy(Service $service)
     {
-        abort_unless($service->user_id === auth()->id(), 403);
+        abort_unless(auth()->user()->isAdmin() || $service->user_id === auth()->id(), 403);
 
         $this->imageService->deleteAllImages($service);
         $service->delete();

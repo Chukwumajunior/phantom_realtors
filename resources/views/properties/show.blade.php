@@ -8,9 +8,9 @@
             <!-- Image Gallery -->
             <div class="mb-8" x-data="{ activeImage: 0, total: {{ $property->images->count() ?: 1 }} }">
                 @if($property->images->count() > 0)
-                <div class="relative w-full rounded-2xl overflow-hidden bg-gray-100">
+                <div class="relative w-full h-[300px] sm:h-[400px] lg:h-[500px] rounded-2xl overflow-hidden bg-gray-100">
                     @foreach($property->images->take(4) as $index => $image)
-                        <img x-show="activeImage === {{ $index }}" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" src="{{ $image->url }}" class="w-full h-[300px] sm:h-[400px] lg:h-[500px] object-cover" alt="{{ $property->title }}">
+                        <img x-show="activeImage === {{ $index }}" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" src="{{ $image->url }}" class="absolute inset-0 w-full h-full object-cover" alt="{{ $property->title }}">
                     @endforeach
 
                     @if($property->images->count() > 1)
@@ -123,8 +123,8 @@
                     <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
                         <h3 class="text-lg font-bold text-slate-900 mb-4">Listed By</h3>
                         <div class="flex items-center gap-3 mb-4">
-                            @if($property->merchant->merchantProfile && $property->merchant->merchantProfile->logo)
-                                <img src="{{ Storage::url($property->merchant->merchantProfile->logo) }}" class="w-12 h-12 rounded-full object-cover" alt="Merchant">
+                            @if($property->merchant->avatar)
+                                <img src="{{ str_starts_with($property->merchant->avatar, 'http') ? $property->merchant->avatar : asset('storage/' . $property->merchant->avatar) }}" class="w-12 h-12 rounded-full object-cover" alt="{{ $property->merchant->name }}">
                             @else
                                 <div class="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center">
                                     <span class="text-amber-600 font-bold text-lg">{{ substr($property->merchant->name, 0, 1) }}</span>

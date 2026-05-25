@@ -1,7 +1,12 @@
 <div>
     <x-slot name="header">
         <div class="flex justify-between items-center">
-            <h2 class="text-2xl font-bold text-slate-900">My Services</h2>
+            <div class="flex items-center gap-3">
+                <a wire:navigate href="{{ route('merchant.dashboard') }}" class="text-gray-500 hover:text-slate-900 transition" title="Back to Dashboard">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                </a>
+                <h2 class="text-2xl font-bold text-slate-900">My Services</h2>
+            </div>
             <a wire:navigate href="{{ route('merchant.services.create') }}" class="inline-flex items-center px-4 py-2 bg-amber-600 text-white rounded-lg font-semibold text-sm hover:bg-amber-700 transition">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                 Add Service

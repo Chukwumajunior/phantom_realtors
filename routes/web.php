@@ -38,7 +38,14 @@ Route::get('/dashboard', function () {
 // PUBLIC ROUTES
 // =============================================
 Route::get('/', HomeController::class)->name('home');
-Route::get('/about', fn() => view('pages.about'))->name('about');
+Route::get('/about', function () {
+    $admin = \App\Models\User::where('role', \App\Enums\UserRole::Admin)->first();
+    return view('pages.about', [
+        'ceoName' => $admin?->name ?? 'Phantom 5',
+        'ceoBio' => $admin?->bio,
+        'ceoAvatar' => $admin?->avatar,
+    ]);
+})->name('about');
 
 // Properties
 Route::get('/properties', [PropertyController::class, 'index'])->name('properties.index');

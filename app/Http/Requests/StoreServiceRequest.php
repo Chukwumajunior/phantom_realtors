@@ -11,7 +11,23 @@ class StoreServiceRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()->isMerchant();
+        return $this->user()->isMerchant() || $this->user()->isAdmin();
+    }
+
+    protected function prepareForValidation(): void
+    {
+        if ($this->category) {
+            $cat = ServiceCategory::tryFrom($this->category);
+            if ($cat) {
+                $this->merge(['name' => $cat->label()]);
+            }
+        }
+
+        if ($this->highlights && is_string($this->highlights)) {
+            $this->merge([
+                'highlights' => array_values(array_filter(array_map('trim', explode("\n", $this->highlights)))),
+            ]);
+        }
     }
 
     public function rules(): array

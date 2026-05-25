@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Enums\ServiceCategory;
+use App\Enums\ServiceGroup;
 use App\Models\Service;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -12,16 +13,24 @@ class ServiceListings extends Component
     use WithPagination;
 
     public string $search = '';
+    public string $group = '';
     public string $category = '';
     public string $sortBy = 'latest';
 
     protected $queryString = [
         'search' => ['except' => ''],
+        'group' => ['except' => ''],
         'category' => ['except' => ''],
     ];
 
     public function updatingSearch()
     {
+        $this->resetPage();
+    }
+
+    public function updatingGroup()
+    {
+        $this->category = '';
         $this->resetPage();
     }
 
@@ -32,7 +41,7 @@ class ServiceListings extends Component
 
     public function clearFilters()
     {
-        $this->reset(['search', 'category', 'sortBy']);
+        $this->reset(['search', 'group', 'category', 'sortBy']);
         $this->resetPage();
     }
 
@@ -50,6 +59,11 @@ class ServiceListings extends Component
 
         if ($this->category) {
             $query->where('category', $this->category);
+        } elseif ($this->group) {
+            $groupEnum = ServiceGroup::tryFrom($this->group);
+            if ($groupEnum) {
+                $query->ofGroup($groupEnum);
+            }
         }
 
         $query = match ($this->sortBy) {
@@ -61,7 +75,7 @@ class ServiceListings extends Component
 
         return view('livewire.service-listings', [
             'services' => $query->paginate(12),
-            'categories' => ServiceCategory::cases(),
+            'hierarchy' => ServiceGroup::hierarchy(),
         ]);
     }
 }

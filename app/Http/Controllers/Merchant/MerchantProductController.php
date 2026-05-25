@@ -47,7 +47,7 @@ class MerchantProductController extends Controller
 
     public function edit(Product $product)
     {
-        abort_unless($product->user_id === auth()->id(), 403);
+        abort_unless(auth()->user()->isAdmin() || $product->user_id === auth()->id(), 403);
         $product->load('images');
 
         return view('merchant.products.edit', compact('product'));
@@ -71,7 +71,7 @@ class MerchantProductController extends Controller
 
     public function destroy(Product $product)
     {
-        abort_unless($product->user_id === auth()->id(), 403);
+        abort_unless(auth()->user()->isAdmin() || $product->user_id === auth()->id(), 403);
 
         $this->imageService->deleteAllImages($product);
         $product->delete();

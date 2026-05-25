@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\Currency;
 use App\Enums\ListingStatus;
 use App\Enums\ServiceCategory;
+use App\Enums\ServiceGroup;
 use App\Enums\SubscriptionStatus;
 use App\Enums\UserRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -104,6 +105,13 @@ class Service extends Model
     public function scopeOfCategory($query, ServiceCategory $category)
     {
         return $query->where('category', $category);
+    }
+
+    public function scopeOfGroup($query, ServiceGroup $group)
+    {
+        $values = array_map(fn (ServiceCategory $c) => $c->value, $group->categories());
+
+        return $query->whereIn('category', $values);
     }
 
     public function scopeFeatured($query)

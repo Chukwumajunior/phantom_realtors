@@ -38,6 +38,39 @@
         </div>
     </section>
 
+    <!-- CEO / Leadership Section -->
+    <section class="py-10 sm:py-16 lg:py-24 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-8 sm:mb-12">
+                <span class="text-amber-600 font-bold uppercase tracking-widest text-xs">Leadership</span>
+                <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 mt-4">Meet Our CEO</h2>
+            </div>
+
+            <div class="max-w-3xl mx-auto">
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <div class="flex flex-col sm:flex-row items-center">
+                        <div class="w-full sm:w-64 md:w-80 flex-shrink-0">
+                            @if($ceoAvatar)
+                                <img src="{{ str_starts_with($ceoAvatar, 'http') ? $ceoAvatar : asset('storage/' . $ceoAvatar) }}" class="w-full h-64 sm:h-80 object-cover" alt="{{ $ceoName }}">
+                            @else
+                                <div class="w-full h-64 sm:h-80 bg-amber-100 flex items-center justify-center">
+                                    <span class="text-amber-600 font-bold text-6xl">{{ substr($ceoName, 0, 1) }}</span>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="p-6 sm:p-8 text-center sm:text-left">
+                            <h3 class="text-xl sm:text-2xl font-bold text-slate-900">{{ $ceoName }}</h3>
+                            <p class="text-amber-600 font-semibold mt-1">CEO / Founder</p>
+                            @if($ceoBio)
+                            <div class="text-gray-600 leading-relaxed mt-4">{!! nl2br(e($ceoBio)) !!}</div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Stats Section -->
     <section class="py-10 sm:py-16 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

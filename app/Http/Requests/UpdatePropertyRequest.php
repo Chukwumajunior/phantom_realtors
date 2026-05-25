@@ -12,8 +12,8 @@ class UpdatePropertyRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()->isMerchant() &&
-               $this->route('property')->user_id === $this->user()->id;
+        return $this->user()->isAdmin() ||
+               ($this->user()->isMerchant() && $this->route('property')->user_id === $this->user()->id);
     }
 
     public function rules(): array

@@ -47,7 +47,7 @@ class MerchantPropertyController extends Controller
 
     public function edit(Property $property)
     {
-        abort_unless($property->user_id === auth()->id(), 403);
+        abort_unless(auth()->user()->isAdmin() || $property->user_id === auth()->id(), 403);
         $property->load('images');
 
         return view('merchant.properties.edit', compact('property'));
@@ -71,7 +71,7 @@ class MerchantPropertyController extends Controller
 
     public function destroy(Property $property)
     {
-        abort_unless($property->user_id === auth()->id(), 403);
+        abort_unless(auth()->user()->isAdmin() || $property->user_id === auth()->id(), 403);
 
         $this->imageService->deleteAllImages($property);
         $property->delete();
