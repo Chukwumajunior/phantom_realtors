@@ -11,7 +11,6 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\ServiceController;
-use App\Livewire\Merchant\OrderDetail;
 use App\Livewire\Merchant\ProductList;
 use App\Livewire\Merchant\PropertyList;
 use App\Livewire\Merchant\ServiceList;
@@ -105,10 +104,6 @@ Route::middleware(['auth', 'verified', 'role:merchant,admin'])->prefix('merchant
         Route::get('/profile', [Merchant\MerchantProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [Merchant\MerchantProfileController::class, 'update'])->name('profile.update');
 
-        // Orders (always accessible, no subscription check)
-        Route::get('/orders', [Merchant\MerchantOrderController::class, 'index'])->name('orders.index');
-        Route::get('/orders/{order}', OrderDetail::class)->name('orders.show');
-
         // Properties - index/show: no subscription needed (delete handled by Livewire)
         Route::get('/properties', PropertyList::class)->name('properties.index');
 
@@ -160,6 +155,8 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     // Payment Confirmations
     Route::get('/payments', [Admin\PaymentConfirmationController::class, 'index'])->name('payments.index');
     Route::get('/payments/{payment}', \App\Livewire\Admin\PaymentDetail::class)->name('payments.show');
+    Route::post('/payments/{payment}/confirm', [Admin\PaymentConfirmationController::class, 'confirm'])->name('payments.confirm');
+    Route::post('/payments/{payment}/reject', [Admin\PaymentConfirmationController::class, 'reject'])->name('payments.reject');
 
     // Order Management
     Route::get('/orders', [Admin\OrderManagementController::class, 'index'])->name('orders.index');

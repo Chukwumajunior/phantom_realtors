@@ -25,7 +25,7 @@ class PaymentConfirmedNotification extends Notification
             ->line('Your payment has been confirmed!')
             ->line("**Order:** #{$this->payment->order->order_number}")
             ->line("**Amount:** ₦" . number_format($this->payment->amount, 2))
-            ->line('Your order is now being processed by the merchant.')
+            ->line('Your order has been completed successfully. Thank you for your purchase!')
             ->action('View Order', url('/customer/orders/' . $this->payment->order_id))
             ->line('If you have any questions, contact us at info@phantom5.com.ng.')
             ->salutation('— The Phantom 5 Team');

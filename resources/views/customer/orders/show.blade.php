@@ -43,7 +43,7 @@
                     </div>
                     <div>
                         <p class="text-xs uppercase font-semibold text-gray-500">Merchant</p>
-                        <p class="font-semibold text-slate-900">{{ $order->merchant->merchantProfile->business_name ?? $order->merchant->name }}</p>
+                        <p class="font-semibold text-slate-900">{{ $order->merchant->isAdmin() ? 'Phantom 5 Merchant' : ($order->merchant->merchantProfile->business_name ?? $order->merchant->name) }}</p>
                         @if($order->merchant->merchantProfile && $order->merchant->merchantProfile->business_phone)
                             <p class="text-sm text-gray-500">{{ $order->merchant->merchantProfile->business_phone }}</p>
                         @endif
@@ -55,8 +55,17 @@
                     <h4 class="text-sm font-semibold text-gray-500 uppercase mb-4">Items</h4>
                     <div class="space-y-3">
                         @foreach($order->items as $item)
-                        <div class="flex items-center justify-between py-3 border-b border-gray-50 last:border-0">
-                            <div>
+                        <div class="flex items-center gap-4 py-3 border-b border-gray-50 last:border-0">
+                            <div class="w-14 h-14 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100">
+                                @if($item->itemable && $item->itemable->images && $item->itemable->images->first())
+                                    <img src="{{ $item->itemable->images->first()->url }}" alt="{{ $item->itemable->name ?? $item->itemable->title ?? 'Item' }}" class="w-full h-full object-cover">
+                                @else
+                                    <div class="w-full h-full flex items-center justify-center text-gray-400">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="flex-1 min-w-0">
                                 <p class="font-medium text-slate-900">{{ $item->itemable->name ?? $item->itemable->title ?? 'Item' }}</p>
                                 <p class="text-sm text-gray-500">Qty: {{ $item->quantity }} x {{ format_price($item->unit_price) }}</p>
                             </div>
@@ -89,6 +98,18 @@
                             @endif
                         </div>
                     @else
+                        {{-- Bank Details --}}
+                        @if(!empty($bankDetails['bank_name']))
+                        <div class="mb-5 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+                            <p class="text-sm font-semibold text-amber-800 mb-2">Transfer payment to:</p>
+                            <div class="space-y-1 text-sm text-amber-900">
+                                <p><span class="text-amber-700">Bank:</span> <span class="font-medium">{{ $bankDetails['bank_name'] }}</span></p>
+                                <p><span class="text-amber-700">Account Name:</span> <span class="font-medium">{{ $bankDetails['account_name'] }}</span></p>
+                                <p><span class="text-amber-700">Account Number:</span> <span class="font-bold">{{ $bankDetails['account_number'] }}</span></p>
+                            </div>
+                        </div>
+                        @endif
+
                         <form action="{{ route('customer.orders.payment', $order) }}" method="POST" enctype="multipart/form-data" class="space-y-4 no-print">
                             @csrf
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -138,7 +159,7 @@
                         Print Receipt
                     </button>
                     @endif
-                    @if($order->status->value === 'pending' && (!$order->payment || $order->payment->payment_status->value !== 'confirmed'))
+                    @if($order->customer_id === auth()->id() && $order->status->value === 'pending' && !$order->payment)
                     <form action="{{ route('customer.orders.cancel', $order) }}" method="POST" onsubmit="return confirm('Are you sure you want to cancel this order?')">
                         @csrf
                         @method('DELETE')

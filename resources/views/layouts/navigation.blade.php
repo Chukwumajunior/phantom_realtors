@@ -18,7 +18,7 @@
 
             <div class="hidden sm:flex sm:items-center sm:space-x-3">
                 @auth
-                    @if(Auth::user()->isCustomer() || Auth::user()->isMerchant())
+                    @if(Auth::user()->isCustomer())
                     <a wire:navigate href="{{ route('customer.orders.index') }}" class="relative p-2 text-gray-300 hover:text-white transition">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg>
                         @php $pendingOrdersCount = Auth::user()->orders()->whereIn('status', ['pending'])->count(); @endphp
@@ -50,6 +50,7 @@
                         <x-slot name="content">
                             @if(Auth::user()->isAdmin())
                                 <x-dropdown-link wire:navigate :href="route('admin.dashboard')">Admin Dashboard</x-dropdown-link>
+                                <x-dropdown-link wire:navigate :href="route('admin.orders.index')">Orders</x-dropdown-link>
                                 <x-dropdown-link wire:navigate :href="route('admin.settings.index')">Site Settings</x-dropdown-link>
                             @endif
 
@@ -61,7 +62,7 @@
                                 <x-dropdown-link wire:navigate :href="route('merchant.subscription.index')">Subscription</x-dropdown-link>
                             @endif
 
-                            @if(Auth::user()->isCustomer() || Auth::user()->isMerchant())
+                            @if(Auth::user()->isCustomer())
                                 <x-dropdown-link wire:navigate :href="route('customer.orders.index')">My Orders</x-dropdown-link>
                             @endif
 
@@ -123,6 +124,7 @@
                 </div>
                 @if(Auth::user()->isAdmin())
                     <a wire:navigate href="{{ route('admin.dashboard') }}" class="block text-sm text-gray-300 hover:text-white py-1">Admin Dashboard</a>
+                    <a wire:navigate href="{{ route('admin.orders.index') }}" class="block text-sm text-gray-300 hover:text-white py-1">Orders</a>
                     <a wire:navigate href="{{ route('admin.settings.index') }}" class="block text-sm text-gray-300 hover:text-white py-1">Site Settings</a>
                 @endif
                 @if(Auth::user()->isMerchant() || Auth::user()->isAdmin())

@@ -7,6 +7,8 @@ use App\Enums\PaymentMethod;
 use App\Enums\PaymentStatus;
 use App\Http\Requests\SubmitPaymentProofRequest;
 use App\Models\Order;
+use App\Models\SiteConfig;
+use App\Models\User;
 use App\Notifications\NewOrderNotification;
 use App\Services\OrderService;
 use App\Services\PaymentService;
@@ -40,6 +42,10 @@ class OrderController extends Controller
             'notes' => ['nullable', 'string', 'max:1000'],
         ]);
 
+        // Only admin-owned listings can be ordered
+        $merchant = User::findOrFail($request->merchant_id);
+        abort_unless($merchant->isAdmin(), 403, 'Orders can only be placed for platform-owned listings.');
+
         $order = $this->orderService->createOrder(
             $request->user(),
             $request->merchant_id,
@@ -61,19 +67,20 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
-        abort_unless(auth()->user()->isAdmin() || $order->customer_id === auth()->id(), 403);
+        abort_unless($order->customer_id === auth()->id(), 403);
 
-        $order->load(['merchant.merchantProfile', 'items.itemable', 'payment']);
+        $order->load(['merchant.merchantProfile', 'items.itemable.images', 'payment']);
 
         return view('customer.orders.show', [
             'order' => $order,
             'paymentMethods' => PaymentMethod::cases(),
+            'bankDetails' => SiteConfig::getBankDetails(),
         ]);
     }
 
     public function submitPayment(SubmitPaymentProofRequest $request, Order $order)
     {
-        abort_unless(auth()->user()->isAdmin() || $order->customer_id === auth()->id(), 403);
+        abort_unless($order->customer_id === auth()->id(), 403);
 
         $data = $request->validated();
 
@@ -94,10 +101,9 @@ class OrderController extends Controller
 
     public function cancel(Order $order)
     {
-        abort_unless(auth()->user()->isAdmin() || $order->customer_id === auth()->id(), 403);
+        abort_unless($order->customer_id === auth()->id(), 403);
 
-        $canCancel = $order->status === OrderStatus::Pending
-            && (!$order->payment || $order->payment->payment_status !== PaymentStatus::Confirmed);
+        $canCancel = $order->status === OrderStatus::Pending && !$order->payment;
 
         abort_unless($canCancel, 403, 'This order cannot be cancelled.');
 

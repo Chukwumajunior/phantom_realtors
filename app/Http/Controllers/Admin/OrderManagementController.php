@@ -13,8 +13,10 @@ class OrderManagementController extends Controller
 {
     public function index(Request $request)
     {
+        $status = $request->status ?? 'pending';
+
         $orders = Order::with(['customer', 'merchant'])
-            ->when($request->status, fn($q, $s) => $q->where('status', $s))
+            ->when($status !== 'all', fn($q) => $q->where('status', $status))
             ->latest()
             ->paginate(15);
 
@@ -26,7 +28,7 @@ class OrderManagementController extends Controller
 
     public function show(Order $order)
     {
-        $order->load(['customer', 'merchant.merchantProfile', 'items.itemable', 'payments']);
+        $order->load(['customer', 'merchant.merchantProfile', 'items.itemable.images', 'payments']);
 
         // Auto-fix stale payment status: if order is confirmed but payment is still pending
         if (in_array($order->status->value, ['confirmed', 'processing', 'completed'])) {

@@ -7,13 +7,14 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                 <div class="p-4 border-b flex items-center gap-4">
+                    @php $currentStatus = request('status', 'pending'); @endphp
                     <select onchange="window.location.href='?status='+this.value" class="border-gray-300 rounded-lg text-sm">
-                        <option value="">All Orders</option>
-                        <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
-                        <option value="confirmed" {{ request('status') == 'confirmed' ? 'selected' : '' }}>Confirmed</option>
-                        <option value="processing" {{ request('status') == 'processing' ? 'selected' : '' }}>Processing</option>
-                        <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Completed</option>
-                        <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+                        <option value="all" {{ $currentStatus == 'all' ? 'selected' : '' }}>All Orders</option>
+                        <option value="pending" {{ $currentStatus == 'pending' ? 'selected' : '' }}>Pending</option>
+                        <option value="confirmed" {{ $currentStatus == 'confirmed' ? 'selected' : '' }}>Confirmed</option>
+                        <option value="processing" {{ $currentStatus == 'processing' ? 'selected' : '' }}>Processing</option>
+                        <option value="completed" {{ $currentStatus == 'completed' ? 'selected' : '' }}>Completed</option>
+                        <option value="cancelled" {{ $currentStatus == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
                     </select>
                 </div>
 

@@ -44,7 +44,7 @@ class PaymentService
             'admin_notes' => $adminNotes,
         ]);
 
-        $payment->order->update(['status' => OrderStatus::Confirmed]);
+        $payment->order->update(['status' => OrderStatus::Completed]);
 
         // Deduct stock for product items
         $payment->order->load('items');
