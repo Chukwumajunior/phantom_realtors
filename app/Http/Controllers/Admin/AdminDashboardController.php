@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Enums\MerchantStatus;
 use App\Enums\OrderStatus;
 use App\Enums\PaymentStatus;
+use App\Enums\SubscriptionStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Inquiry;
 use App\Models\MerchantProfile;
 use App\Models\Order;
 use App\Models\Payment;
+use App\Models\Subscription;
 use App\Models\User;
 
 class AdminDashboardController extends Controller
@@ -23,6 +25,8 @@ class AdminDashboardController extends Controller
             'total_orders' => Order::count(),
             'pending_orders' => Order::pending()->count(),
             'new_inquiries' => Inquiry::unread()->count(),
+            'active_subscriptions' => Subscription::active()->count(),
+            'expiring_soon' => Subscription::active()->where('expires_at', '<=', now()->addDays(7))->count(),
         ];
 
         $recentOrders = Order::with(['customer', 'merchant'])

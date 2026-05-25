@@ -31,7 +31,7 @@
                                     </td>
                                     <td class="px-6 py-4 text-sm text-gray-500">{{ $inquiry->created_at->format('M d, Y') }}</td>
                                     <td class="px-6 py-4 text-right">
-                                        <a href="{{ route('admin.inquiries.show', $inquiry) }}" class="text-amber-600 hover:text-amber-700 text-sm font-medium">View</a>
+                                        <a wire:navigate href="{{ route('admin.inquiries.show', $inquiry) }}" class="text-amber-600 hover:text-amber-700 text-sm font-medium">View</a>
                                     </td>
                                 </tr>
                             @empty

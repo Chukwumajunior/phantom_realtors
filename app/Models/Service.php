@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Enums\Currency;
 use App\Enums\ListingStatus;
 use App\Enums\ServiceCategory;
+use App\Enums\SubscriptionStatus;
+use App\Enums\UserRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -107,5 +109,24 @@ class Service extends Model
     public function scopeFeatured($query)
     {
         return $query->where('is_featured', true);
+    }
+
+    public function scopePremiumVisible($query)
+    {
+        return $query->where('listing_status', ListingStatus::Active);
+    }
+
+    public function scopePubliclyVisible($query)
+    {
+        return $query->where('listing_status', ListingStatus::Active)
+            ->whereHas('user', function ($q) {
+                $q->where(function ($q2) {
+                    $q2->where('role', UserRole::Admin)
+                        ->orWhereHas('subscriptions', function ($q3) {
+                            $q3->where('status', SubscriptionStatus::Active->value)
+                                ->where('expires_at', '>', now());
+                        });
+                });
+            });
     }
 }

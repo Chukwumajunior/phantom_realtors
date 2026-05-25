@@ -165,30 +165,29 @@
                         <h3 class="text-lg font-bold text-slate-900 mb-3">Category</h3>
                         <span class="inline-block bg-slate-100 text-slate-700 px-3 py-1.5 rounded-lg font-medium text-sm">{{ $property->category->label() }}</span>
                     </div>
-                </div>
-            </div>
 
-            <!-- Related Properties -->
-            @if(isset($relatedProperties) && $relatedProperties->count() > 0)
-            <div class="mt-16">
-                <h2 class="text-2xl font-bold text-slate-900 mb-8">Related Properties</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    @foreach($relatedProperties as $related)
-                    <a href="{{ route('properties.show', $related) }}" class="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition duration-300">
-                        <div class="relative h-48 overflow-hidden">
-                            <img src="{{ $related->images->first() ? $related->images->first()->url : 'https://via.placeholder.com/400x300' }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="{{ $related->title }}">
-                            <span class="absolute top-3 left-3 bg-amber-600 text-white text-xs font-bold px-3 py-1 rounded-full">{{ $related->type->label() }}</span>
+                    <!-- Related Properties -->
+                    @if(isset($relatedProperties) && $relatedProperties->count() > 0)
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                        <h3 class="text-lg font-bold text-slate-900 mb-4">Related Properties</h3>
+                        <div class="space-y-4">
+                            @foreach($relatedProperties as $related)
+                            <a href="{{ route('properties.show', $related) }}" class="group flex gap-3 hover:bg-gray-50 rounded-lg p-2 -mx-2 transition">
+                                <div class="w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden">
+                                    <img src="{{ $related->images->first() ? $related->images->first()->url : 'https://via.placeholder.com/200x200' }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="{{ $related->title }}">
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <h4 class="font-semibold text-sm text-slate-900 group-hover:text-amber-600 transition truncate">{{ $related->title }}</h4>
+                                    <p class="text-gray-500 text-xs mt-0.5">{{ $related->city }}, {{ $related->state }}</p>
+                                    <p class="text-amber-600 font-bold text-sm mt-1">{{ format_price($related->price, $related->currency) }}</p>
+                                </div>
+                            </a>
+                            @endforeach
                         </div>
-                        <div class="p-5">
-                            <h3 class="font-bold text-slate-900 group-hover:text-amber-600 transition">{{ $related->title }}</h3>
-                            <p class="text-gray-500 text-sm mt-1">{{ $related->city }}, {{ $related->state }}</p>
-                            <p class="text-amber-600 font-bold mt-2">{{ format_price($related->price, $related->currency) }}</p>
-                        </div>
-                    </a>
-                    @endforeach
+                    </div>
+                    @endif
                 </div>
             </div>
-            @endif
         </div>
     </div>
 </x-app-layout>

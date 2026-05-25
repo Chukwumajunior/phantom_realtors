@@ -7,6 +7,8 @@ use App\Enums\ListingStatus;
 use App\Enums\PropertyCategory;
 use App\Enums\PropertyStatus;
 use App\Enums\PropertyType;
+use App\Enums\SubscriptionStatus;
+use App\Enums\UserRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -125,6 +127,27 @@ class Property extends Model
         if ($min) $query->where('price', '>=', $min);
         if ($max) $query->where('price', '<=', $max);
         return $query;
+    }
+
+    public function scopePremiumVisible($query)
+    {
+        return $query->where('listing_status', ListingStatus::Active)
+            ->where('status', PropertyStatus::Available);
+    }
+
+    public function scopePubliclyVisible($query)
+    {
+        return $query->where('listing_status', ListingStatus::Active)
+            ->where('status', PropertyStatus::Available)
+            ->whereHas('user', function ($q) {
+                $q->where(function ($q2) {
+                    $q2->where('role', UserRole::Admin)
+                        ->orWhereHas('subscriptions', function ($q3) {
+                            $q3->where('status', SubscriptionStatus::Active->value)
+                                ->where('expires_at', '>', now());
+                        });
+                });
+            });
     }
 
     // Accessors

@@ -171,7 +171,7 @@
             </div>
 
             <div class="mt-6">
-                <a href="{{ route('merchant.orders.index') }}" class="text-amber-600 hover:text-amber-700 font-medium text-sm">&larr; Back to Orders</a>
+                <a wire:navigate href="{{ route('merchant.orders.index') }}" class="text-amber-600 hover:text-amber-700 font-medium text-sm">&larr; Back to Orders</a>
             </div>
         </div>
     </div>

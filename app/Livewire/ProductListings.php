@@ -42,7 +42,7 @@ class ProductListings extends Component
 
     public function render()
     {
-        $query = Product::active()->with('images');
+        $query = Product::publiclyVisible()->with('images');
 
         if ($this->search) {
             $query->where(function ($q) {

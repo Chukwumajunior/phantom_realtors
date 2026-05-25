@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="text-2xl font-bold text-slate-900">My Services</h2>
-            <a href="{{ route('merchant.services.create') }}" class="inline-flex items-center px-4 py-2 bg-amber-600 text-white rounded-lg font-semibold text-sm hover:bg-amber-700 transition">
+            <a wire:navigate href="{{ route('merchant.services.create') }}" class="inline-flex items-center px-4 py-2 bg-amber-600 text-white rounded-lg font-semibold text-sm hover:bg-amber-700 transition">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                 Add Service
             </a>
@@ -45,7 +45,7 @@
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="flex items-center gap-3">
-                                        <a href="{{ route('merchant.services.edit', $service) }}" class="text-blue-600 hover:text-blue-700 text-sm font-medium">Edit</a>
+                                        <a wire:navigate href="{{ route('merchant.services.edit', $service) }}" class="text-blue-600 hover:text-blue-700 text-sm font-medium">Edit</a>
                                         <form action="{{ route('merchant.services.destroy', $service) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this service?')">
                                             @csrf
                                             @method('DELETE')
@@ -58,7 +58,7 @@
                             <tr>
                                 <td colspan="5" class="px-6 py-8 text-center text-gray-500">
                                     <p class="mb-2">No services listed yet.</p>
-                                    <a href="{{ route('merchant.services.create') }}" class="text-amber-600 font-medium hover:text-amber-700">Add your first service</a>
+                                    <a wire:navigate href="{{ route('merchant.services.create') }}" class="text-amber-600 font-medium hover:text-amber-700">Add your first service</a>
                                 </td>
                             </tr>
                             @endforelse

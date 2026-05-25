@@ -27,7 +27,7 @@
                         <div class="text-right">
                             <p class="text-lg font-bold text-amber-600">{{ format_price($order->total_amount) }}</p>
                             <div class="flex items-center gap-3 mt-2 justify-end">
-                                <a href="{{ route('customer.orders.show', $order) }}" class="text-sm text-amber-600 hover:text-amber-700 font-medium">View Details &rarr;</a>
+                                <a wire:navigate href="{{ route('customer.orders.show', $order) }}" class="text-sm text-amber-600 hover:text-amber-700 font-medium">View Details &rarr;</a>
                                 @if($order->status->value === 'pending' && (!$order->payment || $order->payment->payment_status->value !== 'confirmed'))
                                 <form action="{{ route('customer.orders.cancel', $order) }}" method="POST" onsubmit="return confirm('Are you sure you want to cancel this order?')">
                                     @csrf
@@ -42,7 +42,7 @@
                 @empty
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-12 text-center">
                     <p class="text-gray-500 text-lg">You have no orders yet.</p>
-                    <a href="{{ route('products.index') }}" class="mt-4 inline-block text-amber-600 hover:text-amber-700 font-medium">Browse Products</a>
+                    <a wire:navigate href="{{ route('products.index') }}" class="mt-4 inline-block text-amber-600 hover:text-amber-700 font-medium">Browse Products</a>
                 </div>
                 @endforelse
             </div>

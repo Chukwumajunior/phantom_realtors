@@ -151,7 +151,7 @@
             </div>
 
             <div class="mt-6">
-                <a href="{{ route('admin.orders.index') }}" class="text-sm text-gray-500 hover:text-gray-700">&larr; Back to Orders</a>
+                <a wire:navigate href="{{ route('admin.orders.index') }}" class="text-sm text-gray-500 hover:text-gray-700">&larr; Back to Orders</a>
             </div>
         </div>
     </div>

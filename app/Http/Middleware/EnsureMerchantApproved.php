@@ -14,6 +14,11 @@ class EnsureMerchantApproved
     {
         $user = $request->user();
 
+        // Admin bypasses merchant approval check
+        if ($user && $user->isAdmin()) {
+            return $next($request);
+        }
+
         if (!$user || $user->role !== UserRole::Merchant) {
             abort(403);
         }

@@ -74,7 +74,7 @@ class PropertyListings extends Component
 
     public function render()
     {
-        $query = Property::available()->with('images');
+        $query = Property::publiclyVisible()->with('images');
 
         if ($this->search) {
             $query->where(function ($q) {
@@ -120,7 +120,7 @@ class PropertyListings extends Component
             default => $query->orderBy('created_at', 'desc'),
         };
 
-        $countries = Property::available()
+        $countries = Property::publiclyVisible()
             ->whereNotNull('country')
             ->where('country', '!=', '')
             ->distinct()
@@ -129,7 +129,7 @@ class PropertyListings extends Component
 
         $states = collect();
         if ($this->country) {
-            $states = Property::available()
+            $states = Property::publiclyVisible()
                 ->where('country', $this->country)
                 ->whereNotNull('state')
                 ->where('state', '!=', '')
@@ -140,7 +140,7 @@ class PropertyListings extends Component
 
         $cities = collect();
         if ($this->state) {
-            $cities = Property::available()
+            $cities = Property::publiclyVisible()
                 ->where('state', $this->state)
                 ->whereNotNull('city')
                 ->where('city', '!=', '')

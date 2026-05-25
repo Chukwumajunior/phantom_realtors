@@ -14,7 +14,7 @@ class AdminSeeder extends Seeder
     {
         User::create([
             'name' => 'Phantom Admin',
-            'email' => 'admin@phantom5realtors.com',
+            'email' => 'admin@phantom5.com.ng',
             'password' => Hash::make('password'),
             'role' => UserRole::Admin,
             'status' => UserStatus::Active,

@@ -11,6 +11,10 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\ServiceController;
+use App\Livewire\Merchant\OrderDetail;
+use App\Livewire\Merchant\ProductList;
+use App\Livewire\Merchant\PropertyList;
+use App\Livewire\Merchant\ServiceList;
 use Illuminate\Support\Facades\Route;
 
 // Auth routes (Breeze)
@@ -56,9 +60,7 @@ Route::post('/contact', [ContactController::class, 'submitForm'])->name('contact
 // AUTHENTICATED ROUTES (any role)
 // =============================================
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile', \App\Livewire\ProfilePage::class)->name('profile.edit');
 
     // Become a Merchant (for customers who want to sell)
     Route::get('/become-a-seller', [BecomeMerchantController::class, 'create'])->name('become-seller');
@@ -77,11 +79,15 @@ Route::middleware(['auth', 'verified', 'role:customer,merchant'])->prefix('custo
 });
 
 // =============================================
-// MERCHANT ROUTES
+// MERCHANT ROUTES (also accessible by admin)
 // =============================================
-Route::middleware(['auth', 'verified', 'role:merchant'])->prefix('merchant')->name('merchant.')->group(function () {
+Route::middleware(['auth', 'verified', 'role:merchant,admin'])->prefix('merchant')->name('merchant.')->group(function () {
     // Pending approval page (accessible before approval)
     Route::get('/pending-approval', fn() => view('merchant.pending-approval'))->name('pending-approval');
+
+    // Subscription pages (accessible before subscription is active)
+    Route::get('/subscription', [Merchant\SubscriptionController::class, 'index'])->name('subscription.index');
+    Route::get('/subscription/expired', [Merchant\SubscriptionController::class, 'expired'])->name('subscription.expired');
 
     // Approved merchant routes
     Route::middleware('merchant.approved')->group(function () {
@@ -91,19 +97,39 @@ Route::middleware(['auth', 'verified', 'role:merchant'])->prefix('merchant')->na
         Route::get('/profile', [Merchant\MerchantProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [Merchant\MerchantProfileController::class, 'update'])->name('profile.update');
 
-        // Properties
-        Route::resource('properties', Merchant\MerchantPropertyController::class);
-
-        // Products
-        Route::resource('products', Merchant\MerchantProductController::class);
-
-        // Services
-        Route::resource('services', Merchant\MerchantServiceController::class);
-
-        // Orders
+        // Orders (always accessible, no subscription check)
         Route::get('/orders', [Merchant\MerchantOrderController::class, 'index'])->name('orders.index');
-        Route::get('/orders/{order}', [Merchant\MerchantOrderController::class, 'show'])->name('orders.show');
-        Route::patch('/orders/{order}/status', [Merchant\MerchantOrderController::class, 'updateStatus'])->name('orders.update-status');
+        Route::get('/orders/{order}', OrderDetail::class)->name('orders.show');
+
+        // Properties - index/show: no subscription needed (delete handled by Livewire)
+        Route::get('/properties', PropertyList::class)->name('properties.index');
+
+        // Products - index: no subscription needed (delete handled by Livewire)
+        Route::get('/products', ProductList::class)->name('products.index');
+
+        // Services - index: no subscription needed (delete handled by Livewire)
+        Route::get('/services', ServiceList::class)->name('services.index');
+
+        // create/store/edit/update: requires active subscription
+        Route::middleware('subscription.active')->group(function () {
+            // Properties
+            Route::get('/properties/create', [Merchant\MerchantPropertyController::class, 'create'])->name('properties.create');
+            Route::post('/properties', [Merchant\MerchantPropertyController::class, 'store'])->name('properties.store');
+            Route::get('/properties/{property}/edit', [Merchant\MerchantPropertyController::class, 'edit'])->name('properties.edit');
+            Route::put('/properties/{property}', [Merchant\MerchantPropertyController::class, 'update'])->name('properties.update');
+
+            // Products
+            Route::get('/products/create', [Merchant\MerchantProductController::class, 'create'])->name('products.create');
+            Route::post('/products', [Merchant\MerchantProductController::class, 'store'])->name('products.store');
+            Route::get('/products/{product}/edit', [Merchant\MerchantProductController::class, 'edit'])->name('products.edit');
+            Route::put('/products/{product}', [Merchant\MerchantProductController::class, 'update'])->name('products.update');
+
+            // Services
+            Route::get('/services/create', [Merchant\MerchantServiceController::class, 'create'])->name('services.create');
+            Route::post('/services', [Merchant\MerchantServiceController::class, 'store'])->name('services.store');
+            Route::get('/services/{service}/edit', [Merchant\MerchantServiceController::class, 'edit'])->name('services.edit');
+            Route::put('/services/{service}', [Merchant\MerchantServiceController::class, 'update'])->name('services.update');
+        });
     });
 });
 
@@ -121,15 +147,11 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
 
     // Merchant Approvals
     Route::get('/merchants', [Admin\MerchantApprovalController::class, 'index'])->name('merchants.index');
-    Route::get('/merchants/{merchantProfile}', [Admin\MerchantApprovalController::class, 'show'])->name('merchants.show');
-    Route::post('/merchants/{merchantProfile}/approve', [Admin\MerchantApprovalController::class, 'approve'])->name('merchants.approve');
-    Route::post('/merchants/{merchantProfile}/reject', [Admin\MerchantApprovalController::class, 'reject'])->name('merchants.reject');
+    Route::get('/merchants/{merchantProfile}', \App\Livewire\Admin\MerchantDetail::class)->name('merchants.show');
 
     // Payment Confirmations
     Route::get('/payments', [Admin\PaymentConfirmationController::class, 'index'])->name('payments.index');
-    Route::get('/payments/{payment}', [Admin\PaymentConfirmationController::class, 'show'])->name('payments.show');
-    Route::post('/payments/{payment}/confirm', [Admin\PaymentConfirmationController::class, 'confirm'])->name('payments.confirm');
-    Route::post('/payments/{payment}/reject', [Admin\PaymentConfirmationController::class, 'reject'])->name('payments.reject');
+    Route::get('/payments/{payment}', \App\Livewire\Admin\PaymentDetail::class)->name('payments.show');
 
     // Order Management
     Route::get('/orders', [Admin\OrderManagementController::class, 'index'])->name('orders.index');
@@ -140,4 +162,13 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::get('/inquiries', [Admin\InquiryController::class, 'index'])->name('inquiries.index');
     Route::get('/inquiries/{inquiry}', [Admin\InquiryController::class, 'show'])->name('inquiries.show');
     Route::patch('/inquiries/{inquiry}', [Admin\InquiryController::class, 'update'])->name('inquiries.update');
+
+    // Subscription Plans
+    Route::resource('subscription-plans', Admin\SubscriptionPlanController::class)->except(['show']);
+
+    // Subscription Management
+    Route::get('/subscriptions', \App\Livewire\Admin\SubscriptionManagement::class)->name('subscriptions.index');
+
+    // Site Settings
+    Route::get('/settings', \App\Livewire\Admin\SiteSettings::class)->name('settings.index');
 });

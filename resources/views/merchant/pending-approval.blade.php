@@ -13,10 +13,10 @@
                     You will be notified once your account has been approved.
                 </p>
                 <p class="text-sm text-gray-500">
-                    If you have any questions, please <a href="{{ route('contact') }}" class="text-amber-600 hover:text-amber-700 font-medium">contact us</a>.
+                    If you have any questions, please <a wire:navigate href="{{ route('contact') }}" class="text-amber-600 hover:text-amber-700 font-medium">contact us</a>.
                 </p>
                 <div class="mt-8">
-                    <a href="{{ route('home') }}" class="inline-flex items-center px-6 py-3 bg-slate-900 text-white rounded-lg font-semibold hover:bg-slate-800 transition">
+                    <a wire:navigate href="{{ route('home') }}" class="inline-flex items-center px-6 py-3 bg-slate-900 text-white rounded-lg font-semibold hover:bg-slate-800 transition">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
                         Back to Home
                     </a>

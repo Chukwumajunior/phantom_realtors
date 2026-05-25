@@ -19,7 +19,7 @@
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden" id="printable-receipt">
                 {{-- Print-only header --}}
                 <div class="hidden print:block text-center border-b-2 border-amber-500 pb-6 mb-6 p-6">
-                    <h1 class="text-2xl font-extrabold text-amber-600">Phantom 5 Realtors</h1>
+                    <h1 class="text-2xl font-extrabold text-amber-600">Phantom 5</h1>
                     <p class="text-gray-500 text-sm">Payment Receipt</p>
                 </div>
 
@@ -123,14 +123,14 @@
 
                 {{-- Print-only footer --}}
                 <div class="hidden print:block text-center border-t border-gray-200 p-6">
-                    <p class="text-sm font-semibold text-slate-900">Phantom 5 Realtors</p>
+                    <p class="text-sm font-semibold text-slate-900">Phantom 5</p>
                     <p class="text-xs text-gray-500 mt-1">Thank you for your purchase!</p>
                     <p class="text-xs text-gray-400 mt-1">This is a computer-generated receipt and does not require a signature.</p>
                 </div>
             </div>
 
             <div class="mt-6 flex items-center justify-between no-print">
-                <a href="{{ route('customer.orders.index') }}" class="text-sm text-gray-500 hover:text-gray-700">&larr; Back to Orders</a>
+                <a wire:navigate href="{{ route('customer.orders.index') }}" class="text-sm text-gray-500 hover:text-gray-700">&larr; Back to Orders</a>
                 <div class="flex items-center gap-3">
                     @if(in_array($order->status->value, ['confirmed', 'processing', 'completed']))
                     <button onclick="window.print()" class="inline-flex items-center gap-2 px-5 py-2.5 bg-slate-800 text-white text-sm font-medium rounded-lg hover:bg-slate-900 transition">

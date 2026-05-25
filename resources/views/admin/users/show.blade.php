@@ -66,7 +66,7 @@
             </div>
 
             <div class="mt-6">
-                <a href="{{ route('admin.users.index') }}" class="text-amber-600 hover:text-amber-700 font-medium text-sm">&larr; Back to Users</a>
+                <a wire:navigate href="{{ route('admin.users.index') }}" class="text-amber-600 hover:text-amber-700 font-medium text-sm">&larr; Back to Users</a>
             </div>
         </div>
     </div>

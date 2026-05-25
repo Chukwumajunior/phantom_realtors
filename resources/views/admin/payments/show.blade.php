@@ -60,12 +60,10 @@
                 <div class="p-6 border-t border-gray-100 flex items-center gap-3">
                     <form action="{{ route('admin.payments.confirm', $payment) }}" method="POST" onsubmit="return confirm('Are you sure you want to confirm this payment? This action cannot be undone.')">
                         @csrf
-                        @method('PATCH')
                         <button type="submit" class="px-6 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition">Confirm Payment</button>
                     </form>
                     <form action="{{ route('admin.payments.reject', $payment) }}" method="POST" class="flex items-center gap-2" onsubmit="return confirm('Are you sure you want to reject this payment?')">
                         @csrf
-                        @method('PATCH')
                         <input type="text" name="admin_notes" placeholder="Rejection reason..." class="border-gray-300 rounded-lg text-sm">
                         <button type="submit" class="px-6 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 transition">Reject</button>
                     </form>
@@ -81,7 +79,7 @@
             </div>
 
             <div class="mt-6">
-                <a href="{{ route('admin.payments.index') }}" class="text-sm text-gray-500 hover:text-gray-700">&larr; Back to Payments</a>
+                <a wire:navigate href="{{ route('admin.payments.index') }}" class="text-sm text-gray-500 hover:text-gray-700">&larr; Back to Payments</a>
             </div>
         </div>
     </div>

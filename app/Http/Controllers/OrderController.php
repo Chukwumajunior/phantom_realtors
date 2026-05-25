@@ -7,6 +7,7 @@ use App\Enums\PaymentMethod;
 use App\Enums\PaymentStatus;
 use App\Http\Requests\SubmitPaymentProofRequest;
 use App\Models\Order;
+use App\Notifications\NewOrderNotification;
 use App\Services\OrderService;
 use App\Services\PaymentService;
 use Illuminate\Http\Request;
@@ -45,6 +46,10 @@ class OrderController extends Controller
             $request->items,
             $request->notes,
         );
+
+        // Notify merchant of new order
+        $order->load(['customer', 'items']);
+        $order->merchant->notify(new NewOrderNotification($order));
 
         return redirect()->route('customer.orders.show', $order)
             ->with('success', 'Order placed successfully. Please submit payment.');

@@ -103,6 +103,21 @@ class User extends Authenticatable
         return $this->hasMany(Review::class);
     }
 
+    public function subscriptions(): HasMany
+    {
+        return $this->hasMany(Subscription::class);
+    }
+
+    public function activeSubscription(): ?Subscription
+    {
+        return $this->subscriptions()->active()->latest('expires_at')->first();
+    }
+
+    public function hasActiveSubscription(): bool
+    {
+        return $this->isAdmin() || $this->subscriptions()->active()->exists();
+    }
+
     // Scopes
     public function scopeRole($query, UserRole $role)
     {

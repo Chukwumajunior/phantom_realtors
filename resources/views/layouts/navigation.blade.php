@@ -2,24 +2,24 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex items-center">
-                <a href="{{ route('home') }}" class="text-xl font-bold text-amber-500">
-                    Phantom 5 Realtors
+                <a wire:navigate href="{{ route('home') }}" class="text-xl font-bold text-amber-500">
+                    Phantom 5
                 </a>
 
                 <div class="hidden sm:flex sm:ml-10 sm:space-x-6">
-                    <a href="{{ route('home') }}" class="text-sm text-gray-300 hover:text-white transition {{ request()->routeIs('home') ? 'text-white' : '' }}">Home</a>
-                    <a href="{{ route('properties.index') }}" class="text-sm text-gray-300 hover:text-white transition {{ request()->routeIs('properties.*') ? 'text-white' : '' }}">Properties</a>
-                    <a href="{{ route('products.index') }}" class="text-sm text-gray-300 hover:text-white transition {{ request()->routeIs('products.*') ? 'text-white' : '' }}">Products</a>
-                    <a href="{{ route('services.index') }}" class="text-sm text-gray-300 hover:text-white transition {{ request()->routeIs('services.*') ? 'text-white' : '' }}">Services</a>
-                    <a href="{{ route('about') }}" class="text-sm text-gray-300 hover:text-white transition {{ request()->routeIs('about') ? 'text-white' : '' }}">About</a>
-                    <a href="{{ route('contact') }}" class="text-sm text-gray-300 hover:text-white transition {{ request()->routeIs('contact') ? 'text-white' : '' }}">Contact</a>
+                    <a wire:navigate href="{{ route('home') }}" class="text-sm text-gray-300 hover:text-white transition {{ request()->routeIs('home') ? 'text-white' : '' }}">Home</a>
+                    <a wire:navigate href="{{ route('properties.index') }}" class="text-sm text-gray-300 hover:text-white transition {{ request()->routeIs('properties.*') ? 'text-white' : '' }}">Properties</a>
+                    <a wire:navigate href="{{ route('products.index') }}" class="text-sm text-gray-300 hover:text-white transition {{ request()->routeIs('products.*') ? 'text-white' : '' }}">Products</a>
+                    <a wire:navigate href="{{ route('services.index') }}" class="text-sm text-gray-300 hover:text-white transition {{ request()->routeIs('services.*') ? 'text-white' : '' }}">Services</a>
+                    <a wire:navigate href="{{ route('about') }}" class="text-sm text-gray-300 hover:text-white transition {{ request()->routeIs('about') ? 'text-white' : '' }}">About</a>
+                    <a wire:navigate href="{{ route('contact') }}" class="text-sm text-gray-300 hover:text-white transition {{ request()->routeIs('contact') ? 'text-white' : '' }}">Contact</a>
                 </div>
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:space-x-3">
                 @auth
                     @if(Auth::user()->isCustomer() || Auth::user()->isMerchant())
-                    <a href="{{ route('customer.orders.index') }}" class="relative p-2 text-gray-300 hover:text-white transition">
+                    <a wire:navigate href="{{ route('customer.orders.index') }}" class="relative p-2 text-gray-300 hover:text-white transition">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg>
                         @php $pendingOrdersCount = Auth::user()->orders()->whereIn('status', ['pending'])->count(); @endphp
                         @if($pendingOrdersCount > 0)
@@ -40,22 +40,24 @@
 
                         <x-slot name="content">
                             @if(Auth::user()->isAdmin())
-                                <x-dropdown-link :href="route('admin.dashboard')">Admin Dashboard</x-dropdown-link>
+                                <x-dropdown-link wire:navigate :href="route('admin.dashboard')">Admin Dashboard</x-dropdown-link>
+                                <x-dropdown-link wire:navigate :href="route('admin.settings.index')">Site Settings</x-dropdown-link>
                             @endif
 
                             @if(Auth::user()->isMerchant())
-                                <x-dropdown-link :href="route('merchant.dashboard')">Merchant Dashboard</x-dropdown-link>
+                                <x-dropdown-link wire:navigate :href="route('merchant.dashboard')">Merchant Dashboard</x-dropdown-link>
+                                <x-dropdown-link wire:navigate :href="route('merchant.subscription.index')">Subscription</x-dropdown-link>
                             @endif
 
                             @if(Auth::user()->isCustomer() || Auth::user()->isMerchant())
-                                <x-dropdown-link :href="route('customer.orders.index')">My Orders</x-dropdown-link>
+                                <x-dropdown-link wire:navigate :href="route('customer.orders.index')">My Orders</x-dropdown-link>
                             @endif
 
                             @if(Auth::user()->isCustomer())
-                                <x-dropdown-link :href="route('become-seller')">Become a Seller</x-dropdown-link>
+                                <x-dropdown-link wire:navigate :href="route('become-seller')">Become a Seller</x-dropdown-link>
                             @endif
 
-                            <x-dropdown-link :href="route('profile.edit')">Profile</x-dropdown-link>
+                            <x-dropdown-link wire:navigate :href="route('profile.edit')">Profile</x-dropdown-link>
 
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
@@ -66,8 +68,8 @@
                         </x-slot>
                     </x-dropdown>
                 @else
-                    <a href="{{ route('login') }}" class="text-sm text-gray-300 hover:text-white transition">Log in</a>
-                    <a href="{{ route('register') }}" class="px-4 py-2 bg-amber-600 text-white text-sm font-medium rounded-lg hover:bg-amber-700 transition">Register</a>
+                    <a wire:navigate href="{{ route('login') }}" class="text-sm text-gray-300 hover:text-white transition">Log in</a>
+                    <a wire:navigate href="{{ route('register') }}" class="px-4 py-2 bg-amber-600 text-white text-sm font-medium rounded-lg hover:bg-amber-700 transition">Register</a>
                 @endauth
             </div>
 
@@ -86,34 +88,36 @@
     <!-- Mobile menu -->
     <div :class="{'block': open, 'hidden': !open}" class="hidden sm:hidden bg-slate-800">
         <div class="px-4 py-3 space-y-2">
-            <a href="{{ route('home') }}" class="block text-sm text-gray-300 hover:text-white py-1">Home</a>
-            <a href="{{ route('properties.index') }}" class="block text-sm text-gray-300 hover:text-white py-1">Properties</a>
-            <a href="{{ route('products.index') }}" class="block text-sm text-gray-300 hover:text-white py-1">Products</a>
-            <a href="{{ route('services.index') }}" class="block text-sm text-gray-300 hover:text-white py-1">Services</a>
-            <a href="{{ route('about') }}" class="block text-sm text-gray-300 hover:text-white py-1">About</a>
-            <a href="{{ route('contact') }}" class="block text-sm text-gray-300 hover:text-white py-1">Contact</a>
+            <a wire:navigate href="{{ route('home') }}" class="block text-sm text-gray-300 hover:text-white py-1">Home</a>
+            <a wire:navigate href="{{ route('properties.index') }}" class="block text-sm text-gray-300 hover:text-white py-1">Properties</a>
+            <a wire:navigate href="{{ route('products.index') }}" class="block text-sm text-gray-300 hover:text-white py-1">Products</a>
+            <a wire:navigate href="{{ route('services.index') }}" class="block text-sm text-gray-300 hover:text-white py-1">Services</a>
+            <a wire:navigate href="{{ route('about') }}" class="block text-sm text-gray-300 hover:text-white py-1">About</a>
+            <a wire:navigate href="{{ route('contact') }}" class="block text-sm text-gray-300 hover:text-white py-1">Contact</a>
         </div>
         <div class="px-4 py-3 border-t border-slate-700">
             @auth
                 <p class="text-sm text-gray-400 mb-2">{{ Auth::user()->name }}</p>
                 @if(Auth::user()->isAdmin())
-                    <a href="{{ route('admin.dashboard') }}" class="block text-sm text-gray-300 hover:text-white py-1">Admin Dashboard</a>
+                    <a wire:navigate href="{{ route('admin.dashboard') }}" class="block text-sm text-gray-300 hover:text-white py-1">Admin Dashboard</a>
+                    <a wire:navigate href="{{ route('admin.settings.index') }}" class="block text-sm text-gray-300 hover:text-white py-1">Site Settings</a>
                 @endif
                 @if(Auth::user()->isMerchant())
-                    <a href="{{ route('merchant.dashboard') }}" class="block text-sm text-gray-300 hover:text-white py-1">Merchant Dashboard</a>
+                    <a wire:navigate href="{{ route('merchant.dashboard') }}" class="block text-sm text-gray-300 hover:text-white py-1">Merchant Dashboard</a>
+                    <a wire:navigate href="{{ route('merchant.subscription.index') }}" class="block text-sm text-gray-300 hover:text-white py-1">Subscription</a>
                 @endif
                 @if(Auth::user()->isCustomer())
-                    <a href="{{ route('customer.orders.index') }}" class="block text-sm text-gray-300 hover:text-white py-1">My Orders</a>
-                    <a href="{{ route('become-seller') }}" class="block text-sm text-amber-500 hover:text-amber-400 py-1">Become a Seller</a>
+                    <a wire:navigate href="{{ route('customer.orders.index') }}" class="block text-sm text-gray-300 hover:text-white py-1">My Orders</a>
+                    <a wire:navigate href="{{ route('become-seller') }}" class="block text-sm text-amber-500 hover:text-amber-400 py-1">Become a Seller</a>
                 @endif
-                <a href="{{ route('profile.edit') }}" class="block text-sm text-gray-300 hover:text-white py-1">Profile</a>
+                <a wire:navigate href="{{ route('profile.edit') }}" class="block text-sm text-gray-300 hover:text-white py-1">Profile</a>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="block text-sm text-gray-300 hover:text-white py-1">Log Out</button>
                 </form>
             @else
-                <a href="{{ route('login') }}" class="block text-sm text-gray-300 hover:text-white py-1">Log in</a>
-                <a href="{{ route('register') }}" class="block text-sm text-amber-500 hover:text-amber-400 py-1 font-medium">Register</a>
+                <a wire:navigate href="{{ route('login') }}" class="block text-sm text-gray-300 hover:text-white py-1">Log in</a>
+                <a wire:navigate href="{{ route('register') }}" class="block text-sm text-amber-500 hover:text-amber-400 py-1 font-medium">Register</a>
             @endauth
         </div>
     </div>

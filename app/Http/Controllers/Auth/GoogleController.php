@@ -6,8 +6,10 @@ use App\Enums\UserRole;
 use App\Enums\UserStatus;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Notifications\WelcomeNotification;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
+use Laravel\Socialite\Two\InvalidStateException;
 
 class GoogleController extends Controller
 {
@@ -18,7 +20,12 @@ class GoogleController extends Controller
 
     public function callback()
     {
-        $googleUser = Socialite::driver('google')->user();
+        try {
+            $googleUser = Socialite::driver('google')->user();
+        } catch (InvalidStateException|\Exception) {
+            return redirect()->route('login')
+                ->with('error', 'Authentication failed. Please try again.');
+        }
 
         $user = User::where('google_id', $googleUser->getId())
             ->orWhere('email', $googleUser->getEmail())
@@ -44,6 +51,8 @@ class GoogleController extends Controller
                 'status' => UserStatus::Active,
                 'email_verified_at' => now(),
             ]);
+
+            $user->notify(new WelcomeNotification);
         }
 
         Auth::login($user, remember: true);

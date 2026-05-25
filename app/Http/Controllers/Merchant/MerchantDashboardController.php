@@ -27,6 +27,9 @@ class MerchantDashboardController extends Controller
             ->take(5)
             ->get();
 
-        return view('merchant.dashboard', compact('stats', 'recentOrders'));
+        $subscription = $user->activeSubscription();
+        $subscriptionExpiringSoon = $subscription && $subscription->daysRemaining() <= 7;
+
+        return view('merchant.dashboard', compact('stats', 'recentOrders', 'subscription', 'subscriptionExpiringSoon'));
     }
 }

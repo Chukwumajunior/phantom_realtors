@@ -6,6 +6,7 @@ use App\Enums\UserRole;
 use App\Enums\UserStatus;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Notifications\WelcomeNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -41,8 +42,10 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
+        $user->notify(new WelcomeNotification);
+
         Auth::login($user);
 
-        return redirect()->route('home');
+        return redirect()->route('home')->with('success', 'Welcome to Phantom 5! Your account has been created successfully.');
     }
 }

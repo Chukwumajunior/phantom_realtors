@@ -37,10 +37,10 @@
                 @endif
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-                <!-- Service Info -->
-                <div class="space-y-6">
+                <!-- Service Info (Left) -->
+                <div class="lg:col-span-2 space-y-6">
                     <div>
                         <span class="inline-block bg-emerald-600 text-white text-xs font-medium px-3 py-1 rounded-full mb-3">{{ $service->category->label() }}</span>
                         <h1 class="text-3xl font-bold text-slate-900">{{ $service->name }}</h1>
@@ -121,27 +121,30 @@
                     </div>
                     @endif
                 </div>
-            </div>
 
-            <!-- Related Services -->
-            @if(isset($relatedServices) && $relatedServices->count() > 0)
-            <div class="mt-12">
-                <h2 class="text-2xl font-bold text-slate-900 mb-6">Related Services</h2>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    @foreach($relatedServices as $related)
-                    <a href="{{ route('services.show', $related) }}" class="group bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition duration-300">
-                        <div class="relative h-40 overflow-hidden">
-                            <img src="{{ $related->images->first() ? $related->images->first()->url : 'https://via.placeholder.com/400x250' }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="{{ $related->name }}">
+                <!-- Sidebar (Right) -->
+                <div class="space-y-6">
+                    <!-- Related Services -->
+                    @if(isset($relatedServices) && $relatedServices->count() > 0)
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                        <h3 class="text-lg font-bold text-slate-900 mb-4">Related Services</h3>
+                        <div class="space-y-4">
+                            @foreach($relatedServices as $related)
+                            <a href="{{ route('services.show', $related) }}" class="group flex gap-3 hover:bg-gray-50 rounded-lg p-2 -mx-2 transition">
+                                <div class="w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden">
+                                    <img src="{{ $related->images->first() ? $related->images->first()->url : 'https://via.placeholder.com/200x200' }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="{{ $related->name }}">
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <h4 class="font-semibold text-sm text-slate-900 group-hover:text-amber-600 transition truncate">{{ $related->name }}</h4>
+                                    <p class="text-amber-600 font-bold text-sm mt-1">{{ format_price($related->price_from, $related->currency, 0) }} - {{ format_price($related->price_to, $related->currency, 0) }}</p>
+                                </div>
+                            </a>
+                            @endforeach
                         </div>
-                        <div class="p-4">
-                            <h3 class="font-semibold text-slate-900 group-hover:text-amber-600 transition truncate">{{ $related->name }}</h3>
-                            <p class="text-amber-600 font-bold text-sm mt-2">{{ format_price($related->price_from, $related->currency, 0) }} - {{ format_price($related->price_to, $related->currency, 0) }}</p>
-                        </div>
-                    </a>
-                    @endforeach
+                    </div>
+                    @endif
                 </div>
             </div>
-            @endif
         </div>
     </div>
 </x-app-layout>

@@ -44,7 +44,7 @@
             </div>
 
             <div class="mt-6">
-                <a href="{{ route('admin.inquiries.index') }}" class="text-sm text-gray-500 hover:text-gray-700">&larr; Back to Inquiries</a>
+                <a wire:navigate href="{{ route('admin.inquiries.index') }}" class="text-sm text-gray-500 hover:text-gray-700">&larr; Back to Inquiries</a>
             </div>
         </div>
     </div>

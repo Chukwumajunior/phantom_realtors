@@ -37,10 +37,10 @@
                 @endif
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-                <!-- Product Info -->
-                <div class="space-y-6">
+                <!-- Product Info (Left) -->
+                <div class="lg:col-span-2 space-y-6">
                     <div>
                         <span class="inline-block bg-slate-900 text-white text-xs font-medium px-3 py-1 rounded-full mb-3">{{ $product->category->label() }}</span>
                         <h1 class="text-3xl font-bold text-slate-900">{{ $product->name }}</h1>
@@ -156,34 +156,35 @@
                     </div>
                     @endif
                 </div>
-            </div>
 
-            <!-- Related Products -->
-            @if(isset($relatedProducts) && $relatedProducts->count() > 0)
-            <div class="mt-12">
-                <h2 class="text-2xl font-bold text-slate-900 mb-6">Related Products</h2>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    @foreach($relatedProducts as $related)
-                    <a href="{{ route('products.show', $related) }}" class="group bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition duration-300">
-                        <div class="relative h-40 overflow-hidden">
-                            <img src="{{ $related->images->first() ? $related->images->first()->url : 'https://via.placeholder.com/300x200' }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="{{ $related->name }}">
+                <!-- Sidebar (Right) -->
+                <div class="space-y-6">
+                    <!-- Related Products -->
+                    @if(isset($relatedProducts) && $relatedProducts->count() > 0)
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                        <h3 class="text-lg font-bold text-slate-900 mb-4">Related Products</h3>
+                        <div class="space-y-4">
+                            @foreach($relatedProducts as $related)
+                            <a href="{{ route('products.show', $related) }}" class="group flex gap-3 hover:bg-gray-50 rounded-lg p-2 -mx-2 transition">
+                                <div class="w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden">
+                                    <img src="{{ $related->images->first() ? $related->images->first()->url : 'https://via.placeholder.com/200x200' }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="{{ $related->name }}">
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <h4 class="font-semibold text-sm text-slate-900 group-hover:text-amber-600 transition truncate">{{ $related->name }}</h4>
+                                    <p class="text-amber-600 font-bold text-sm mt-1">{{ format_price($related->price, $related->currency) }}</p>
+                                    @if($related->stock_quantity > 0)
+                                        <span class="text-xs text-emerald-600">{{ $related->stock_quantity }} left</span>
+                                    @else
+                                        <span class="text-xs text-red-500">Sold out</span>
+                                    @endif
+                                </div>
+                            </a>
+                            @endforeach
                         </div>
-                        <div class="p-4">
-                            <h3 class="font-semibold text-sm text-slate-900 group-hover:text-amber-600 transition truncate">{{ $related->name }}</h3>
-                            <div class="flex items-center justify-between mt-2">
-                                <p class="text-amber-600 font-bold text-sm">{{ format_price($related->price, $related->currency) }}</p>
-                                @if($related->stock_quantity > 0)
-                                    <span class="text-xs text-emerald-600">{{ $related->stock_quantity }} left</span>
-                                @else
-                                    <span class="text-xs text-red-500">Sold out</span>
-                                @endif
-                            </div>
-                        </div>
-                    </a>
-                    @endforeach
+                    </div>
+                    @endif
                 </div>
             </div>
-            @endif
         </div>
     </div>
 </x-app-layout>

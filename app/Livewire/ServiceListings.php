@@ -38,7 +38,7 @@ class ServiceListings extends Component
 
     public function render()
     {
-        $query = Service::active()->with('images');
+        $query = Service::publiclyVisible()->with('images');
 
         if ($this->search) {
             $query->where(function ($q) {

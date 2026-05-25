@@ -23,6 +23,10 @@ class MerchantProfile extends Model
         'approved_at',
         'approved_by',
         'rejection_reason',
+        'subscription_plan_id',
+        'payment_proof',
+        'payment_reference',
+        'amount_paid',
     ];
 
     protected function casts(): array
@@ -41,6 +45,11 @@ class MerchantProfile extends Model
     public function approvedByUser(): BelongsTo
     {
         return $this->belongsTo(User::class, 'approved_by');
+    }
+
+    public function subscriptionPlan(): BelongsTo
+    {
+        return $this->belongsTo(SubscriptionPlan::class);
     }
 
     public function isApproved(): bool

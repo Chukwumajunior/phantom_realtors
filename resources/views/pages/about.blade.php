@@ -9,7 +9,7 @@
             <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2070" class="w-full h-full object-cover" alt="About">
         </div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-            <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">About Phantom 5 Realtors</h1>
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">About Phantom 5</h1>
             <p class="text-xl text-gray-300 max-w-2xl mx-auto">Building dreams, delivering excellence since day one.</p>
         </div>
     </section>
@@ -25,7 +25,7 @@
                     <span class="text-amber-600 font-bold uppercase tracking-widest text-xs">Who We Are</span>
                     <h2 class="text-3xl font-bold text-slate-900 mt-4 mb-6">We specialize in connecting people with quality spaces</h2>
                     <p class="text-gray-600 leading-relaxed mb-4">
-                        Phantom 5 Realtors is a leading real estate and lifestyle company specializing in buying, selling, and renting quality homes. We also provide top-notch building products and professional services to help you create your perfect living space.
+                        Phantom 5 is a leading real estate and lifestyle company specializing in buying, selling, and renting quality homes. We also provide top-notch building products and professional services to help you create your perfect living space.
                     </p>
                     <p class="text-gray-600 leading-relaxed mb-4">
                         Our marketplace connects verified merchants with customers, ensuring quality products from electricals to furniture, and professional services from painting to full renovation work.

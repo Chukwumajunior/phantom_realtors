@@ -8,12 +8,15 @@ use App\Enums\PaymentStatus;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Product;
+use App\Notifications\PaymentConfirmedNotification;
+use App\Notifications\PaymentRejectedNotification;
+use App\Notifications\PaymentSubmittedNotification;
 
 class PaymentService
 {
     public function createPayment(Order $order, PaymentMethod $method, array $data = []): Payment
     {
-        return Payment::create([
+        $payment = Payment::create([
             'order_id' => $order->id,
             'user_id' => $order->customer_id,
             'amount' => $order->total_amount,
@@ -25,6 +28,11 @@ class PaymentService
             'proof_of_payment' => $data['proof_of_payment'] ?? null,
             'notes' => $data['notes'] ?? null,
         ]);
+
+        $payment->load('order');
+        $payment->user->notify(new PaymentSubmittedNotification($payment));
+
+        return $payment;
     }
 
     public function confirmPayment(Payment $payment, int $confirmedBy, ?string $adminNotes = null): Payment
@@ -47,6 +55,9 @@ class PaymentService
             }
         }
 
+        $payment->load('order');
+        $payment->user->notify(new PaymentConfirmedNotification($payment));
+
         return $payment;
     }
 
@@ -58,6 +69,9 @@ class PaymentService
             'confirmed_at' => now(),
             'admin_notes' => $adminNotes,
         ]);
+
+        $payment->load('order');
+        $payment->user->notify(new PaymentRejectedNotification($payment));
 
         return $payment;
     }

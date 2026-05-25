@@ -153,7 +153,7 @@
                 </div>
 
                 <div class="flex justify-end gap-4">
-                    <a href="{{ route('merchant.properties.index') }}" class="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition">Cancel</a>
+                    <a wire:navigate href="{{ route('merchant.properties.index') }}" class="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition">Cancel</a>
                     <button type="submit" class="px-6 py-3 bg-amber-600 text-white rounded-lg font-semibold hover:bg-amber-700 transition">Create Property</button>
                 </div>
             </form>

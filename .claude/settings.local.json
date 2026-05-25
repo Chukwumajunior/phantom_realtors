@@ -24,7 +24,13 @@
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(git branch:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(php -r \"require ''vendor/autoload.php''; $app = require ''bootstrap/app.php''; $app->make\\(''Illuminate\\\\Contracts\\\\Console\\\\Kernel''\\)->bootstrap\\(\\); try { Illuminate\\\\Support\\\\Facades\\\\Mail::raw\\(''Test email from Phantom 5'', function\\($m\\) { $m->to\\(''notification@phantom5.com.ng''\\)->subject\\(''Test''\\); }\\); echo ''Mail sent successfully''; } catch \\(Exception $e\\) { echo ''ERROR: '' . $e->getMessage\\(\\); }\")",
+      "Bash(php test_mail.php:*)",
+      "Bash(php -r:*)",
+      "Bash(nslookup:*)",
+      "Bash(curl:*)",
+      "Bash(php test_home.php:*)"
     ]
   }
 }
