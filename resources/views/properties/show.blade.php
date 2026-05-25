@@ -138,7 +138,7 @@
                             </div>
                         </div>
                         @php
-                            $propertyAddress = $property->merchant->merchantProfile->business_address ?? null;
+                            $propertyAddress = $property->merchant->merchantProfile->business_address ?? $property->merchant->address ?? null;
                             $propertyPhone = $property->merchant->merchantProfile->business_phone ?? $property->merchant->phone ?? null;
                         @endphp
                         @if($propertyAddress)

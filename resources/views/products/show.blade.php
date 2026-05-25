@@ -157,7 +157,7 @@
                             </div>
                         </div>
                         @php
-                            $productAddress = $product->merchant->merchantProfile->business_address ?? null;
+                            $productAddress = $product->merchant->merchantProfile->business_address ?? $product->merchant->address ?? null;
                             $productPhone = $product->merchant->merchantProfile->business_phone ?? $product->merchant->phone ?? null;
                         @endphp
                         @if($productAddress)

@@ -114,7 +114,7 @@
                             </div>
                         </div>
                         @php
-                            $serviceAddress = $service->merchant->merchantProfile->business_address ?? null;
+                            $serviceAddress = $service->merchant->merchantProfile->business_address ?? $service->merchant->address ?? null;
                             $servicePhone = $service->merchant->merchantProfile->business_phone ?? $service->merchant->phone ?? null;
                         @endphp
                         @if($serviceAddress)
