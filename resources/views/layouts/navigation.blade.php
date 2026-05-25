@@ -44,8 +44,11 @@
                                 <x-dropdown-link wire:navigate :href="route('admin.settings.index')">Site Settings</x-dropdown-link>
                             @endif
 
-                            @if(Auth::user()->isMerchant())
+                            @if(Auth::user()->isMerchant() || Auth::user()->isAdmin())
                                 <x-dropdown-link wire:navigate :href="route('merchant.dashboard')">Merchant Dashboard</x-dropdown-link>
+                            @endif
+
+                            @if(Auth::user()->isMerchant())
                                 <x-dropdown-link wire:navigate :href="route('merchant.subscription.index')">Subscription</x-dropdown-link>
                             @endif
 
@@ -102,8 +105,10 @@
                     <a wire:navigate href="{{ route('admin.dashboard') }}" class="block text-sm text-gray-300 hover:text-white py-1">Admin Dashboard</a>
                     <a wire:navigate href="{{ route('admin.settings.index') }}" class="block text-sm text-gray-300 hover:text-white py-1">Site Settings</a>
                 @endif
-                @if(Auth::user()->isMerchant())
+                @if(Auth::user()->isMerchant() || Auth::user()->isAdmin())
                     <a wire:navigate href="{{ route('merchant.dashboard') }}" class="block text-sm text-gray-300 hover:text-white py-1">Merchant Dashboard</a>
+                @endif
+                @if(Auth::user()->isMerchant())
                     <a wire:navigate href="{{ route('merchant.subscription.index') }}" class="block text-sm text-gray-300 hover:text-white py-1">Subscription</a>
                 @endif
                 @if(Auth::user()->isCustomer())
