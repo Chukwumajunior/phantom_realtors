@@ -18,6 +18,20 @@
 
             <div class="hidden sm:flex sm:items-center sm:space-x-3">
                 @auth
+                    @if(Auth::user()->isAdmin())
+                    @php
+                        $adminPendingOrders = \App\Models\Order::where('status', 'pending')->count();
+                        $adminPendingMerchants = \App\Models\MerchantProfile::pending()->count();
+                        $adminTotalPending = $adminPendingOrders + $adminPendingMerchants;
+                    @endphp
+                    <a wire:navigate href="{{ route('admin.dashboard') }}" class="relative p-2 text-gray-300 hover:text-white transition" title="Notifications">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                        @if($adminTotalPending > 0)
+                        <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">{{ $adminTotalPending > 99 ? '99+' : $adminTotalPending }}</span>
+                        @endif
+                    </a>
+                    @endif
+
                     @if(Auth::user()->isCustomer())
                     <a wire:navigate href="{{ route('customer.orders.index') }}" class="relative p-2 text-gray-300 hover:text-white transition">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg>
@@ -123,8 +137,22 @@
                     <p class="text-sm text-gray-300 font-medium">{{ Auth::user()->name }}</p>
                 </div>
                 @if(Auth::user()->isAdmin())
-                    <a wire:navigate href="{{ route('admin.dashboard') }}" class="block text-sm text-gray-300 hover:text-white py-1">Admin Dashboard</a>
-                    <a wire:navigate href="{{ route('admin.orders.index') }}" class="block text-sm text-gray-300 hover:text-white py-1">Orders</a>
+                    @php
+                        $mobilePendingOrders = \App\Models\Order::where('status', 'pending')->count();
+                        $mobilePendingMerchants = \App\Models\MerchantProfile::pending()->count();
+                    @endphp
+                    <a wire:navigate href="{{ route('admin.dashboard') }}" class="flex items-center justify-between text-sm text-gray-300 hover:text-white py-1">
+                        <span>Admin Dashboard</span>
+                        @if($mobilePendingOrders + $mobilePendingMerchants > 0)
+                        <span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">{{ $mobilePendingOrders + $mobilePendingMerchants }}</span>
+                        @endif
+                    </a>
+                    <a wire:navigate href="{{ route('admin.orders.index') }}" class="flex items-center justify-between text-sm text-gray-300 hover:text-white py-1">
+                        <span>Orders</span>
+                        @if($mobilePendingOrders > 0)
+                        <span class="bg-amber-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">{{ $mobilePendingOrders }}</span>
+                        @endif
+                    </a>
                     <a wire:navigate href="{{ route('admin.settings.index') }}" class="block text-sm text-gray-300 hover:text-white py-1">Site Settings</a>
                 @endif
                 @if(Auth::user()->isMerchant() || Auth::user()->isAdmin())
