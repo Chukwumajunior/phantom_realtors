@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="py-12">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 class="text-3xl font-bold text-slate-900 mb-2">How to Use Phantom 5</h1>
+            <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">How to Use <span class="whitespace-nowrap">Phantom 5</span></h1>
             <p class="text-gray-500 mb-10">A quick guide to help you get the most out of the platform.</p>
 
             @if(Auth::user()->isAdmin())

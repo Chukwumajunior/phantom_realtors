@@ -31,6 +31,15 @@
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             <button class="flex items-center gap-2 px-3 py-2 text-sm text-gray-300 hover:text-white rounded-lg hover:bg-slate-800 transition">
+                                @if(Auth::user()->avatar)
+                                    @if(str_starts_with(Auth::user()->avatar, 'http'))
+                                        <img src="{{ Auth::user()->avatar }}" alt="{{ Auth::user()->name }}" class="w-7 h-7 rounded-full object-cover ring-2 ring-slate-700">
+                                    @else
+                                        <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="{{ Auth::user()->name }}" class="w-7 h-7 rounded-full object-cover ring-2 ring-slate-700">
+                                    @endif
+                                @else
+                                    <span class="w-7 h-7 rounded-full bg-amber-600 flex items-center justify-center text-xs font-bold text-white ring-2 ring-slate-700">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</span>
+                                @endif
                                 <span>{{ Auth::user()->name }}</span>
                                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -100,7 +109,18 @@
         </div>
         <div class="px-4 py-3 border-t border-slate-700">
             @auth
-                <p class="text-sm text-gray-400 mb-2">{{ Auth::user()->name }}</p>
+                <div class="flex items-center gap-3 mb-3">
+                    @if(Auth::user()->avatar)
+                        @if(str_starts_with(Auth::user()->avatar, 'http'))
+                            <img src="{{ Auth::user()->avatar }}" alt="{{ Auth::user()->name }}" class="w-8 h-8 rounded-full object-cover ring-2 ring-slate-600">
+                        @else
+                            <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="{{ Auth::user()->name }}" class="w-8 h-8 rounded-full object-cover ring-2 ring-slate-600">
+                        @endif
+                    @else
+                        <span class="w-8 h-8 rounded-full bg-amber-600 flex items-center justify-center text-sm font-bold text-white ring-2 ring-slate-600">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</span>
+                    @endif
+                    <p class="text-sm text-gray-300 font-medium">{{ Auth::user()->name }}</p>
+                </div>
                 @if(Auth::user()->isAdmin())
                     <a wire:navigate href="{{ route('admin.dashboard') }}" class="block text-sm text-gray-300 hover:text-white py-1">Admin Dashboard</a>
                     <a wire:navigate href="{{ route('admin.settings.index') }}" class="block text-sm text-gray-300 hover:text-white py-1">Site Settings</a>

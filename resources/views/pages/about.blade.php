@@ -4,26 +4,26 @@
     </x-slot>
 
     <!-- Hero Section -->
-    <section class="relative py-20 bg-slate-900 overflow-hidden">
+    <section class="relative py-12 sm:py-20 bg-slate-900 overflow-hidden">
         <div class="absolute inset-0 opacity-20">
             <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2070" class="w-full h-full object-cover" alt="About">
         </div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-            <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">About Phantom 5</h1>
-            <p class="text-xl text-gray-300 max-w-2xl mx-auto">Building dreams, delivering excellence since day one.</p>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">About <span class="whitespace-nowrap">Phantom 5</span></h1>
+            <p class="text-base sm:text-xl text-gray-300 max-w-2xl mx-auto">Building dreams, delivering excellence since day one.</p>
         </div>
     </section>
 
     <!-- About Content -->
-    <section class="py-16 lg:py-24 bg-white">
+    <section class="py-10 sm:py-16 lg:py-24 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
                 <div>
                     <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=2000" class="rounded-2xl shadow-xl w-full" alt="Interior">
                 </div>
                 <div>
                     <span class="text-amber-600 font-bold uppercase tracking-widest text-xs">Who We Are</span>
-                    <h2 class="text-3xl font-bold text-slate-900 mt-4 mb-6">We specialize in connecting people with quality spaces</h2>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 mt-4 mb-6">We specialize in connecting people with quality spaces</h2>
                     <p class="text-gray-600 leading-relaxed mb-4">
                         Phantom 5 is a leading real estate and lifestyle company specializing in buying, selling, and renting quality homes. We also provide top-notch building products and professional services to help you create your perfect living space.
                     </p>
@@ -39,23 +39,23 @@
     </section>
 
     <!-- Stats Section -->
-    <section class="py-16 bg-gray-50">
+    <section class="py-10 sm:py-16 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
                 <div class="text-center">
-                    <div class="text-4xl font-bold text-amber-600">500+</div>
+                    <div class="text-3xl sm:text-4xl font-bold text-amber-600">500+</div>
                     <p class="text-gray-600 mt-2 font-medium">Properties Listed</p>
                 </div>
                 <div class="text-center">
-                    <div class="text-4xl font-bold text-amber-600">200+</div>
+                    <div class="text-3xl sm:text-4xl font-bold text-amber-600">200+</div>
                     <p class="text-gray-600 mt-2 font-medium">Happy Clients</p>
                 </div>
                 <div class="text-center">
-                    <div class="text-4xl font-bold text-amber-600">50+</div>
+                    <div class="text-3xl sm:text-4xl font-bold text-amber-600">50+</div>
                     <p class="text-gray-600 mt-2 font-medium">Verified Merchants</p>
                 </div>
                 <div class="text-center">
-                    <div class="text-4xl font-bold text-amber-600">100%</div>
+                    <div class="text-3xl sm:text-4xl font-bold text-amber-600">100%</div>
                     <p class="text-gray-600 mt-2 font-medium">Client Satisfaction</p>
                 </div>
             </div>
@@ -63,10 +63,10 @@
     </section>
 
     <!-- Values Section -->
-    <section class="py-16 lg:py-24 bg-white">
+    <section class="py-10 sm:py-16 lg:py-24 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-slate-900">Our Core Values</h2>
+            <div class="text-center mb-8 sm:mb-12">
+                <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">Our Core Values</h2>
                 <p class="text-gray-500 mt-3 max-w-xl mx-auto">Guiding principles that drive everything we do</p>
             </div>
 

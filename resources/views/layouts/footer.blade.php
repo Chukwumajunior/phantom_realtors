@@ -24,7 +24,7 @@
                 <h4 class="text-white text-sm font-semibold uppercase mb-4">Contact</h4>
                 <ul class="space-y-2 text-sm">
                     <li>Phone: 07019449840</li>
-                    <li>Email: phantom5realt@gmail.com</li>
+                    <li>Email: info@phantom5.com.ng</li>
                     <li>No.9 Ireku Street, Oworoshoki, Kosofe, Lagos.</li>
                 </ul>
             </div>

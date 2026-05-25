@@ -43,7 +43,7 @@
                 <div class="lg:col-span-2 space-y-6">
                     <div>
                         <span class="inline-block bg-emerald-600 text-white text-xs font-medium px-3 py-1 rounded-full mb-3">{{ $service->category->label() }}</span>
-                        <h1 class="text-3xl font-bold text-slate-900">{{ $service->name }}</h1>
+                        <h1 class="text-2xl sm:text-3xl font-bold text-slate-900">{{ $service->name }}</h1>
                     </div>
 
                     <!-- Price Range -->

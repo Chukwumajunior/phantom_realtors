@@ -51,7 +51,7 @@
                                 </p>
                             </div>
                             <div class="text-right">
-                                <p class="text-3xl font-bold text-amber-600">{{ format_price($property->price, $property->currency) }}</p>
+                                <p class="text-2xl sm:text-3xl font-bold text-amber-600">{{ format_price($property->price, $property->currency) }}</p>
                                 <span class="inline-block mt-2 bg-amber-100 text-amber-800 text-sm font-semibold px-3 py-1 rounded-full">{{ $property->type->label() }}</span>
                             </div>
                         </div>

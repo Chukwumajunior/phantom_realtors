@@ -3,12 +3,12 @@
         <h2 class="text-2xl font-bold text-slate-900">Contact Us</h2>
     </x-slot>
 
-    <section class="py-16 lg:py-24">
+    <section class="py-10 sm:py-16 lg:py-24">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
                 <!-- Contact Info -->
                 <div>
-                    <h1 class="text-3xl font-bold text-slate-900 mb-4">Get In Touch</h1>
+                    <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 mb-4">Get In Touch</h1>
                     <p class="text-gray-600 mb-8 leading-relaxed">Have questions about our properties, products, or services? We would love to hear from you. Fill out the form and we will get back to you as soon as possible.</p>
 
                     <div class="space-y-6">
@@ -28,7 +28,7 @@
                             </div>
                             <div>
                                 <p class="font-semibold text-slate-900">Email</p>
-                                <p class="text-gray-600">phantom5realt@gmail.com</p>
+                                <p class="text-gray-600">info@phantom5.com.ng</p>
                             </div>
                         </div>
 

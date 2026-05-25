@@ -43,8 +43,8 @@
                 <div class="lg:col-span-2 space-y-6">
                     <div>
                         <span class="inline-block bg-slate-900 text-white text-xs font-medium px-3 py-1 rounded-full mb-3">{{ $product->category->label() }}</span>
-                        <h1 class="text-3xl font-bold text-slate-900">{{ $product->name }}</h1>
-                        <p class="text-3xl font-bold text-amber-600 mt-4">{{ format_price($product->price, $product->currency) }}</p>
+                        <h1 class="text-2xl sm:text-3xl font-bold text-slate-900">{{ $product->name }}</h1>
+                        <p class="text-2xl sm:text-3xl font-bold text-amber-600 mt-4">{{ format_price($product->price, $product->currency) }}</p>
                     </div>
 
                     <!-- Stock Status -->

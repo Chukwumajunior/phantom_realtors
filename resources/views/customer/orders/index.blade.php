@@ -8,9 +8,9 @@
             <div class="space-y-4">
                 @forelse($orders as $order)
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="p-6 flex items-center justify-between">
+                    <div class="p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                         <div>
-                            <div class="flex items-center gap-3">
+                            <div class="flex items-center gap-3 flex-wrap">
                                 <h3 class="font-bold text-slate-900">{{ $order->order_number }}</h3>
                                 <x-status-badge :status="$order->status->label()" :color="$order->status->color()" />
                             </div>
@@ -24,9 +24,9 @@
                                 <p class="text-xs text-red-600 mt-1">Payment not submitted</p>
                             @endif
                         </div>
-                        <div class="text-right">
+                        <div class="sm:text-right flex sm:flex-col items-center sm:items-end gap-3 sm:gap-0">
                             <p class="text-lg font-bold text-amber-600">{{ format_price($order->total_amount) }}</p>
-                            <div class="flex items-center gap-3 mt-2 justify-end">
+                            <div class="flex items-center gap-3 sm:mt-2">
                                 <a wire:navigate href="{{ route('customer.orders.show', $order) }}" class="text-sm text-amber-600 hover:text-amber-700 font-medium">View Details &rarr;</a>
                                 @if($order->status->value === 'pending' && (!$order->payment || $order->payment->payment_status->value !== 'confirmed'))
                                 <form action="{{ route('customer.orders.cancel', $order) }}" method="POST" onsubmit="return confirm('Are you sure you want to cancel this order?')">

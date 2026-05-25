@@ -1,23 +1,23 @@
 <x-app-layout>
     <!-- Hero Section -->
-    <section class="relative min-h-[80vh] flex items-center overflow-hidden">
+    <section class="relative min-h-[60vh] sm:min-h-[80vh] flex items-center overflow-hidden">
         <div class="absolute inset-0 z-0">
             <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070" class="w-full h-full object-cover" alt="Luxury Home">
             <div class="absolute inset-0 bg-gradient-to-r from-slate-900/90 to-slate-900/40"></div>
         </div>
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-white py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-white py-12 sm:py-24">
             <div class="max-w-3xl">
-                <span class="inline-block px-4 py-2 rounded-full bg-amber-600/20 border border-amber-500/30 text-amber-500 text-xs font-bold uppercase tracking-widest mb-6">Premium Real Estate & Building Solutions</span>
-                <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
-                    Welcome to <span class="text-amber-500">Phantom 5</span>
+                <span class="inline-block px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-amber-600/20 border border-amber-500/30 text-amber-500 text-[10px] sm:text-xs font-bold uppercase tracking-widest mb-4 sm:mb-6">Premium Real Estate & Building Solutions</span>
+                <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-4 sm:mb-6">
+                    Welcome to <span class="text-amber-500 whitespace-nowrap">Phantom 5</span>
                 </h1>
-                <p class="text-lg md:text-xl text-white/80 mb-10 leading-relaxed max-w-xl">
+                <p class="text-base sm:text-lg md:text-xl text-white/80 mb-6 sm:mb-10 leading-relaxed max-w-xl">
                     Quality homes, building solutions, and modern living. We connect you with the best properties, products, and services to create your dream space.
                 </p>
-                <div class="flex flex-col sm:flex-row gap-4">
-                    <a href="{{ route('properties.index') }}" class="bg-amber-600 text-white px-8 py-4 rounded-lg font-bold text-center hover:bg-amber-700 transition duration-300 shadow-xl">Browse Properties</a>
-                    <a href="{{ route('products.index') }}" class="bg-white/10 backdrop-blur-md border border-white/20 text-white px-8 py-4 rounded-lg font-bold text-center hover:bg-white/20 transition duration-300">Shop Products</a>
+                <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                    <a href="{{ route('properties.index') }}" class="bg-amber-600 text-white px-6 py-3 sm:px-8 sm:py-4 rounded-lg font-bold text-center text-sm sm:text-base hover:bg-amber-700 transition duration-300 shadow-xl">Browse Properties</a>
+                    <a href="{{ route('products.index') }}" class="bg-white/10 backdrop-blur-md border border-white/20 text-white px-6 py-3 sm:px-8 sm:py-4 rounded-lg font-bold text-center text-sm sm:text-base hover:bg-white/20 transition duration-300">Shop Products</a>
                 </div>
             </div>
         </div>
@@ -81,12 +81,12 @@
 
     <!-- Featured Properties -->
     @if($featuredProperties->count())
-    <section class="py-16 lg:py-24 bg-white">
+    <section class="py-10 sm:py-16 lg:py-24 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center mb-10">
+            <div class="flex justify-between items-center mb-6 sm:mb-10">
                 <div>
-                    <h2 class="text-3xl font-bold text-slate-900">Featured Properties</h2>
-                    <p class="text-gray-500 mt-2">Discover our hand-picked properties</p>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">Featured Properties</h2>
+                    <p class="text-gray-500 mt-1 sm:mt-2 text-sm sm:text-base">Discover our hand-picked properties</p>
                 </div>
                 <a href="{{ route('properties.index') }}" class="hidden sm:inline-flex items-center text-amber-600 font-semibold hover:text-amber-700 transition">
                     View All
@@ -135,12 +135,12 @@
 
     <!-- Featured Products -->
     @if($featuredProducts->count())
-    <section class="py-16 lg:py-24 bg-gray-50">
+    <section class="py-10 sm:py-16 lg:py-24 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center mb-10">
+            <div class="flex justify-between items-center mb-6 sm:mb-10">
                 <div>
-                    <h2 class="text-3xl font-bold text-slate-900">Featured Products</h2>
-                    <p class="text-gray-500 mt-2">Quality building and home products</p>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">Featured Products</h2>
+                    <p class="text-gray-500 mt-1 sm:mt-2 text-sm sm:text-base">Quality building and home products</p>
                 </div>
                 <a href="{{ route('products.index') }}" class="hidden sm:inline-flex items-center text-amber-600 font-semibold hover:text-amber-700 transition">
                     View All
@@ -192,12 +192,12 @@
 
     <!-- Featured Services -->
     @if($featuredServices->count())
-    <section class="py-16 lg:py-24 bg-white">
+    <section class="py-10 sm:py-16 lg:py-24 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center mb-10">
+            <div class="flex justify-between items-center mb-6 sm:mb-10">
                 <div>
-                    <h2 class="text-3xl font-bold text-slate-900">Featured Services</h2>
-                    <p class="text-gray-500 mt-2">Professional services for your home</p>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">Featured Services</h2>
+                    <p class="text-gray-500 mt-1 sm:mt-2 text-sm sm:text-base">Professional services for your home</p>
                 </div>
                 <a href="{{ route('services.index') }}" class="hidden sm:inline-flex items-center text-amber-600 font-semibold hover:text-amber-700 transition">
                     View All
