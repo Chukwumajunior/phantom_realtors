@@ -61,6 +61,7 @@ Route::post('/contact', [ContactController::class, 'submitForm'])->name('contact
 // =============================================
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', \App\Livewire\ProfilePage::class)->name('profile.edit');
+    Route::get('/guide', fn() => view('pages.guide'))->name('user-guide');
 
     // Become a Merchant (for customers who want to sell)
     Route::get('/become-a-seller', [BecomeMerchantController::class, 'create'])->name('become-seller');
