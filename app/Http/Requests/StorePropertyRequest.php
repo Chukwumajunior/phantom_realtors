@@ -15,6 +15,15 @@ class StorePropertyRequest extends FormRequest
         return $this->user()->isMerchant() || $this->user()->isAdmin();
     }
 
+    protected function prepareForValidation(): void
+    {
+        if ($this->features && is_string($this->features)) {
+            $this->merge([
+                'features' => array_values(array_filter(array_map('trim', explode("\n", $this->features)))),
+            ]);
+        }
+    }
+
     public function rules(): array
     {
         return [

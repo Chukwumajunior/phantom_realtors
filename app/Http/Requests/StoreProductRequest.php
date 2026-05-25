@@ -14,6 +14,24 @@ class StoreProductRequest extends FormRequest
         return $this->user()->isMerchant() || $this->user()->isAdmin();
     }
 
+    protected function prepareForValidation(): void
+    {
+        if ($this->specifications && is_string($this->specifications)) {
+            $specs = [];
+            foreach (explode("\n", $this->specifications) as $line) {
+                $line = trim($line);
+                if ($line === '') continue;
+                if (str_contains($line, ':')) {
+                    [$key, $value] = explode(':', $line, 2);
+                    $specs[trim($key)] = trim($value);
+                } else {
+                    $specs[$line] = '';
+                }
+            }
+            $this->merge(['specifications' => $specs]);
+        }
+    }
+
     public function rules(): array
     {
         return [

@@ -16,6 +16,15 @@ class UpdatePropertyRequest extends FormRequest
                ($this->user()->isMerchant() && $this->route('property')->user_id === $this->user()->id);
     }
 
+    protected function prepareForValidation(): void
+    {
+        if ($this->features && is_string($this->features)) {
+            $this->merge([
+                'features' => array_values(array_filter(array_map('trim', explode("\n", $this->features)))),
+            ]);
+        }
+    }
+
     public function rules(): array
     {
         return [
