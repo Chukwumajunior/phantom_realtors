@@ -20,6 +20,7 @@ class AdminDashboardController extends Controller
     {
         $stats = [
             'total_users' => User::count(),
+            'total_merchants' => MerchantProfile::where('status', MerchantStatus::Approved)->count(),
             'pending_merchants' => MerchantProfile::pending()->count(),
             'pending_payments' => Payment::pending()->count(),
             'total_orders' => Order::count(),
