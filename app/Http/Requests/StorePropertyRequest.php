@@ -12,7 +12,7 @@ class StorePropertyRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()->isMerchant() || $this->user()->isAdmin();
+        return $this->user()->merchantProfile !== null || $this->user()->isAdmin();
     }
 
     protected function prepareForValidation(): void

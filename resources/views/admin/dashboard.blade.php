@@ -58,28 +58,18 @@
                 <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm text-gray-500">Active Subscriptions</p>
-                            <p class="text-3xl font-bold text-green-600 mt-1">{{ $stats['active_subscriptions'] ?? 0 }}</p>
+                            <p class="text-sm text-gray-500">Tier Breakdown</p>
+                            <div class="flex items-center gap-3 mt-2">
+                                <span class="text-xs text-gray-500">T1: <strong class="text-slate-900">{{ $stats['tier_1_count'] ?? 0 }}</strong></span>
+                                <span class="text-xs text-blue-500">T2: <strong class="text-blue-700">{{ $stats['tier_2_count'] ?? 0 }}</strong></span>
+                                <span class="text-xs text-purple-500">T3: <strong class="text-purple-700">{{ $stats['tier_3_count'] ?? 0 }}</strong></span>
+                            </div>
                         </div>
                         <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
                             <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                         </div>
                     </div>
                 </div>
-
-                @if(($stats['expiring_soon'] ?? 0) > 0)
-                <div class="bg-white rounded-xl p-6 shadow-sm border border-orange-200">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm text-gray-500">Expiring Soon (7 days)</p>
-                            <p class="text-3xl font-bold text-orange-600 mt-1">{{ $stats['expiring_soon'] }}</p>
-                        </div>
-                        <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-                            <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        </div>
-                    </div>
-                </div>
-                @endif
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">

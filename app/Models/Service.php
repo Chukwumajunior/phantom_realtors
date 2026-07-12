@@ -6,8 +6,6 @@ use App\Enums\Currency;
 use App\Enums\ListingStatus;
 use App\Enums\ServiceCategory;
 use App\Enums\ServiceGroup;
-use App\Enums\SubscriptionStatus;
-use App\Enums\UserRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -33,6 +31,13 @@ class Service extends Model
         'listing_status',
         'service_area',
         'highlights',
+        'location_house_number',
+        'location_street_name',
+        'location_area',
+        'location_lga',
+        'location_state',
+        'location_zip_code',
+        'location_country',
         'is_featured',
         'views_count',
     ];
@@ -121,20 +126,34 @@ class Service extends Model
 
     public function scopePremiumVisible($query)
     {
-        return $query->where('listing_status', ListingStatus::Active);
+        return $query->where('listing_status', ListingStatus::Active)
+            ->whereHas('user');
     }
 
     public function scopePubliclyVisible($query)
     {
         return $query->where('listing_status', ListingStatus::Active)
-            ->whereHas('user', function ($q) {
-                $q->where(function ($q2) {
-                    $q2->where('role', UserRole::Admin)
-                        ->orWhereHas('subscriptions', function ($q3) {
-                            $q3->where('status', SubscriptionStatus::Active->value)
-                                ->where('expires_at', '>', now());
-                        });
-                });
-            });
+            ->whereHas('user');
+    }
+
+    public function scopeInState($query, string $state)
+    {
+        return $query->where('location_state', $state);
+    }
+
+    public function scopeInLga($query, string $lga)
+    {
+        return $query->where('location_lga', $lga);
+    }
+
+    public function getLocationAttribute(): string
+    {
+        $parts = array_filter([
+            $this->location_area,
+            $this->location_lga,
+            $this->location_state,
+        ]);
+
+        return implode(', ', $parts);
     }
 }

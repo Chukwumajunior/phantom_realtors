@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Services\ImageService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -113,6 +114,37 @@ class ProfilePage extends Component
         ]);
 
         $user = Auth::user();
+        $imageService = app(ImageService::class);
+
+        // Delete avatar file
+        if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
+            Storage::disk('public')->delete($user->avatar);
+        }
+
+        // Soft-delete listings and remove their image files
+        foreach ($user->properties as $property) {
+            $imageService->deleteAllImages($property);
+            $property->delete();
+        }
+        foreach ($user->products as $product) {
+            $imageService->deleteAllImages($product);
+            $product->delete();
+        }
+        foreach ($user->services as $service) {
+            $imageService->deleteAllImages($service);
+            $service->delete();
+        }
+
+        // Delete merchant profile files and record
+        if ($profile = $user->merchantProfile) {
+            foreach (['logo', 'cac_document', 'payment_proof'] as $field) {
+                if ($profile->$field && Storage::disk('public')->exists($profile->$field)) {
+                    Storage::disk('public')->delete($profile->$field);
+                }
+            }
+            $profile->delete();
+        }
+
         Auth::logout();
         $user->delete();
 

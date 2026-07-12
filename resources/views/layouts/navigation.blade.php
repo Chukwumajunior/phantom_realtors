@@ -7,7 +7,6 @@
                 </a>
 
                 <div class="hidden sm:flex sm:ml-10 sm:space-x-6">
-                    <a wire:navigate href="{{ route('home') }}" class="text-sm text-gray-300 hover:text-white transition {{ request()->routeIs('home') ? 'text-white' : '' }}">Home</a>
                     <a wire:navigate href="{{ route('properties.index') }}" class="text-sm text-gray-300 hover:text-white transition {{ request()->routeIs('properties.*') ? 'text-white' : '' }}">Properties</a>
                     <a wire:navigate href="{{ route('products.index') }}" class="text-sm text-gray-300 hover:text-white transition {{ request()->routeIs('products.*') ? 'text-white' : '' }}">Products</a>
                     <a wire:navigate href="{{ route('services.index') }}" class="text-sm text-gray-300 hover:text-white transition {{ request()->routeIs('services.*') ? 'text-white' : '' }}">Services</a>
@@ -66,22 +65,16 @@
                                 <x-dropdown-link wire:navigate :href="route('admin.dashboard')">Admin Dashboard</x-dropdown-link>
                                 <x-dropdown-link wire:navigate :href="route('admin.orders.index')">Orders</x-dropdown-link>
                                 <x-dropdown-link wire:navigate :href="route('admin.settings.index')">Site Settings</x-dropdown-link>
+                                <x-dropdown-link wire:navigate :href="route('admin.banners.index')">Banners</x-dropdown-link>
                             @endif
 
                             @if(Auth::user()->isMerchant() || Auth::user()->isAdmin())
                                 <x-dropdown-link wire:navigate :href="route('merchant.dashboard')">Merchant Dashboard</x-dropdown-link>
                             @endif
 
-                            @if(Auth::user()->isMerchant())
-                                <x-dropdown-link wire:navigate :href="route('merchant.subscription.index')">Subscription</x-dropdown-link>
-                            @endif
-
                             @if(Auth::user()->isCustomer())
                                 <x-dropdown-link wire:navigate :href="route('customer.orders.index')">My Orders</x-dropdown-link>
-                            @endif
-
-                            @if(Auth::user()->isCustomer())
-                                <x-dropdown-link wire:navigate :href="route('become-seller')">Become a Seller</x-dropdown-link>
+                                <x-dropdown-link wire:navigate :href="route('merchant.setup')">Start Posting</x-dropdown-link>
                             @endif
 
                             <x-dropdown-link wire:navigate :href="route('profile.edit')">Profile</x-dropdown-link>
@@ -115,7 +108,6 @@
     <!-- Mobile menu -->
     <div :class="{'block': open, 'hidden': !open}" class="hidden sm:hidden bg-slate-800">
         <div class="px-4 py-3 space-y-2">
-            <a wire:navigate href="{{ route('home') }}" class="block text-sm text-gray-300 hover:text-white py-1">Home</a>
             <a wire:navigate href="{{ route('properties.index') }}" class="block text-sm text-gray-300 hover:text-white py-1">Properties</a>
             <a wire:navigate href="{{ route('products.index') }}" class="block text-sm text-gray-300 hover:text-white py-1">Products</a>
             <a wire:navigate href="{{ route('services.index') }}" class="block text-sm text-gray-300 hover:text-white py-1">Services</a>
@@ -154,16 +146,14 @@
                         @endif
                     </a>
                     <a wire:navigate href="{{ route('admin.settings.index') }}" class="block text-sm text-gray-300 hover:text-white py-1">Site Settings</a>
+                    <a wire:navigate href="{{ route('admin.banners.index') }}" class="block text-sm text-gray-300 hover:text-white py-1">Banners</a>
                 @endif
                 @if(Auth::user()->isMerchant() || Auth::user()->isAdmin())
                     <a wire:navigate href="{{ route('merchant.dashboard') }}" class="block text-sm text-gray-300 hover:text-white py-1">Merchant Dashboard</a>
                 @endif
-                @if(Auth::user()->isMerchant())
-                    <a wire:navigate href="{{ route('merchant.subscription.index') }}" class="block text-sm text-gray-300 hover:text-white py-1">Subscription</a>
-                @endif
                 @if(Auth::user()->isCustomer())
                     <a wire:navigate href="{{ route('customer.orders.index') }}" class="block text-sm text-gray-300 hover:text-white py-1">My Orders</a>
-                    <a wire:navigate href="{{ route('become-seller') }}" class="block text-sm text-amber-500 hover:text-amber-400 py-1">Become a Seller</a>
+                    <a wire:navigate href="{{ route('merchant.setup') }}" class="block text-sm text-amber-500 hover:text-amber-400 py-1">Start Posting</a>
                 @endif
                 <a wire:navigate href="{{ route('profile.edit') }}" class="block text-sm text-gray-300 hover:text-white py-1">Profile</a>
                 <form method="POST" action="{{ route('logout') }}">

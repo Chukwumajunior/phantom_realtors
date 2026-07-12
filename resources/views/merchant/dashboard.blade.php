@@ -1,46 +1,67 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="text-2xl font-bold text-slate-900">Merchant Dashboard</h2>
+        <h2 class="text-2xl font-bold text-slate-900">Dashboard</h2>
     </x-slot>
 
     <div class="py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- Subscription Status Banner -->
-            @if(isset($subscription) && $subscription)
-                @if($subscriptionExpiringSoon)
-                <div class="mb-6 bg-yellow-50 border border-yellow-200 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                    <div class="flex items-start sm:items-center gap-3">
-                        <svg class="w-6 h-6 text-yellow-600 shrink-0 mt-0.5 sm:mt-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                        <div>
-                            <p class="font-semibold text-yellow-800">Subscription expiring soon</p>
-                            <p class="text-sm text-yellow-700">Your {{ $subscription->status->label() }} subscription expires in {{ $subscription->daysRemaining() }} day(s) on {{ $subscription->expires_at->format('M d, Y') }}.</p>
-                        </div>
+            @if(session('success'))
+            <div class="mb-6 bg-green-50 border border-green-200 rounded-lg p-4">
+                <p class="text-sm text-green-700">{{ session('success') }}</p>
+            </div>
+            @endif
+
+            @if(session('info'))
+            <div class="mb-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <p class="text-sm text-blue-700">{{ session('info') }}</p>
+            </div>
+            @endif
+
+            @if($profile && $profile->isPending())
+            <div class="mb-6 bg-yellow-50 border border-yellow-200 rounded-xl p-5">
+                <div class="flex items-start gap-3">
+                    <svg class="w-5 h-5 text-yellow-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <div>
+                        <h4 class="text-sm font-bold text-yellow-800">Payment Pending Confirmation</h4>
+                        <p class="text-sm text-yellow-700 mt-1">Your {{ $tier->label() }} payment is being reviewed by admin. You'll be able to create listings once confirmed.</p>
                     </div>
-                    <a wire:navigate href="{{ route('merchant.subscription.index') }}" class="px-4 py-2 bg-yellow-600 text-white text-sm font-medium rounded-lg hover:bg-yellow-700 transition text-center shrink-0">Renew</a>
                 </div>
-                @else
-                <div class="mb-6 bg-green-50 border border-green-200 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                    <div class="flex items-start sm:items-center gap-3">
-                        <svg class="w-6 h-6 text-green-600 shrink-0 mt-0.5 sm:mt-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        <div>
-                            <p class="font-semibold text-green-800">{{ $subscription->status->label() }} Subscription</p>
-                            <p class="text-sm text-green-700">{{ $subscription->daysRemaining() }} day(s) remaining (expires {{ $subscription->expires_at->format('M d, Y') }})</p>
+            </div>
+            @endif
+
+            <!-- Tier Info Card -->
+            <div class="mb-6 bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
+                                @if($tier === \App\Enums\PosterTier::Tier1) bg-gray-100 text-gray-800
+                                @elseif($tier === \App\Enums\PosterTier::Tier2) bg-blue-100 text-blue-800
+                                @else bg-purple-100 text-purple-800
+                                @endif">
+                                {{ $tier->label() }}
+                            </span>
                         </div>
+                        <p class="text-sm text-gray-600 mt-2">
+                            @if($stats['posts_remaining'] === null)
+                                Unlimited posts &middot; Unlimited categories
+                            @else
+                                {{ $stats['posts_remaining'] }} post(s) remaining &middot;
+                                {{ $stats['categories_used'] }}/{{ $stats['max_categories'] }} categories used
+                            @endif
+                        </p>
                     </div>
-                    <a wire:navigate href="{{ route('merchant.subscription.index') }}" class="text-sm text-green-700 font-medium hover:text-green-800 shrink-0">View Details</a>
+                    @if($tier !== \App\Enums\PosterTier::Tier3)
+                        <a href="{{ route('merchant.profile.edit') }}" class="px-4 py-2 bg-amber-600 text-white text-sm font-medium rounded-lg hover:bg-amber-700 transition text-center shrink-0">
+                            Upgrade Tier
+                        </a>
+                    @endif
                 </div>
-                @endif
-            @elseif(!auth()->user()->isAdmin())
-                <div class="mb-6 bg-red-50 border border-red-200 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                    <div class="flex items-start sm:items-center gap-3">
-                        <svg class="w-6 h-6 text-red-600 shrink-0 mt-0.5 sm:mt-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
-                        <div>
-                            <p class="font-semibold text-red-800">No Active Subscription</p>
-                            <p class="text-sm text-red-700">You cannot create or edit listings. Contact admin to activate your subscription.</p>
-                        </div>
-                    </div>
-                    <a wire:navigate href="{{ route('merchant.subscription.index') }}" class="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 transition text-center shrink-0">View Plans</a>
-                </div>
+            </div>
+
+            <!-- Upgrade Prompt for Tier 1 -->
+            @if($tier === \App\Enums\PosterTier::Tier1)
+                <x-upgrade-prompt />
             @endif
 
             <!-- Stat Cards -->
@@ -83,7 +104,6 @@
                     </div>
                     <a wire:navigate href="{{ route('merchant.services.index') }}" class="text-sm text-amber-600 font-medium mt-3 inline-block hover:text-amber-700">View all &rarr;</a>
                 </div>
-
             </div>
         </div>
     </div>

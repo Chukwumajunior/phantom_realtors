@@ -10,16 +10,20 @@ class MerchantDashboardController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
+        $profile = $user->merchantProfile;
 
         $stats = [
             'total_properties' => $user->properties()->count(),
             'total_products' => $user->products()->count(),
             'total_services' => $user->services()->count(),
+            'total_posts' => $user->totalPostsCount(),
+            'posts_remaining' => $user->remainingPosts(),
+            'categories_used' => count($user->usedCategories()),
+            'max_categories' => $profile->tier->maxCategories(),
         ];
 
-        $subscription = $user->activeSubscription();
-        $subscriptionExpiringSoon = $subscription && $subscription->daysRemaining() <= 7;
+        $tier = $profile->tier;
 
-        return view('merchant.dashboard', compact('stats', 'subscription', 'subscriptionExpiringSoon'));
+        return view('merchant.dashboard', compact('stats', 'profile', 'tier'));
     }
 }

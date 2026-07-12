@@ -1,27 +1,172 @@
 <x-app-layout>
-    <!-- Hero Section -->
-    <section class="relative min-h-[60vh] sm:min-h-[80vh] flex items-center overflow-hidden">
-        <div class="absolute inset-0 z-0">
-            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070" class="w-full h-full object-cover" alt="Luxury Home">
-            <div class="absolute inset-0 bg-gradient-to-r from-slate-900/90 to-slate-900/40"></div>
-        </div>
+    <!-- Hero Section - Jumia Style -->
+    <section class="bg-gray-100 pt-4 sm:pt-5 pb-2">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex gap-4">
+                <!-- Left Sidebar: Navigation + Ad below (hidden on mobile) -->
+                <div class="hidden lg:flex lg:flex-col lg:gap-3 w-56 shrink-0 animate-[slideInLeft_0.4s_ease-out]">
+                    <!-- Category Navigation -->
+                    <nav class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                        <a href="{{ route('properties.index') }}" class="group flex items-center gap-3 px-4 py-3.5 border-b border-gray-50 hover:bg-amber-50 transition-all duration-200">
+                            <div class="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center shrink-0 group-hover:bg-amber-200 transition">
+                                <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                            </div>
+                            <span class="text-sm font-medium text-slate-700 group-hover:text-amber-700 transition">Properties</span>
+                            <svg class="w-4 h-4 text-gray-300 ml-auto group-hover:text-amber-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </a>
+                        <a href="{{ route('products.index') }}" class="group flex items-center gap-3 px-4 py-3.5 border-b border-gray-50 hover:bg-amber-50 transition-all duration-200">
+                            <div class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center shrink-0 group-hover:bg-blue-200 transition">
+                                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                            </div>
+                            <span class="text-sm font-medium text-slate-700 group-hover:text-amber-700 transition">Products</span>
+                            <svg class="w-4 h-4 text-gray-300 ml-auto group-hover:text-amber-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </a>
+                        <a href="{{ route('services.index') }}" class="group flex items-center gap-3 px-4 py-3.5 hover:bg-amber-50 transition-all duration-200">
+                            <div class="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center shrink-0 group-hover:bg-emerald-200 transition">
+                                <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                            </div>
+                            <span class="text-sm font-medium text-slate-700 group-hover:text-amber-700 transition">Services</span>
+                            <svg class="w-4 h-4 text-gray-300 ml-auto group-hover:text-amber-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </a>
+                    </nav>
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-white py-12 sm:py-24">
-            <div class="max-w-3xl">
-                <span class="inline-block px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-amber-600/20 border border-amber-500/30 text-amber-500 text-[10px] sm:text-xs font-bold uppercase tracking-widest mb-4 sm:mb-6">Premium Real Estate & Building Solutions</span>
-                <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-4 sm:mb-6">
-                    Welcome to <span class="text-amber-500 whitespace-nowrap">Phantom 5</span>
-                </h1>
-                <p class="text-base sm:text-lg md:text-xl text-white/80 mb-6 sm:mb-10 leading-relaxed max-w-xl">
-                    Quality homes, building solutions, and modern living. We connect you with the best properties, products, and services to create your dream space.
-                </p>
-                <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                    <a href="{{ route('properties.index') }}" class="bg-amber-600 text-white px-6 py-3 sm:px-8 sm:py-4 rounded-lg font-bold text-center text-sm sm:text-base hover:bg-amber-700 transition duration-300 shadow-xl">Browse Properties</a>
-                    <a href="{{ route('products.index') }}" class="bg-white/10 backdrop-blur-md border border-white/20 text-white px-6 py-3 sm:px-8 sm:py-4 rounded-lg font-bold text-center text-sm sm:text-base hover:bg-white/20 transition duration-300">Shop Products</a>
+                    <!-- Small Ad/Promo below navigation -->
+                    @if($banners->count())
+                        <a href="{{ $banners->first()->link_url ?? '#' }}" target="_blank" rel="noopener noreferrer" class="block rounded-xl overflow-hidden shadow-sm border border-gray-100 flex-1">
+                            @if($banners->first()->media_type === 'video')
+                                <video src="{{ $banners->first()->media_url }}" class="w-full h-full object-cover" autoplay muted loop playsinline></video>
+                            @else
+                                <img src="{{ $banners->first()->media_url }}" class="w-full h-full object-cover" alt="{{ $banners->first()->title }}">
+                            @endif
+                        </a>
+                    @else
+                        <div class="rounded-xl overflow-hidden bg-gradient-to-br from-slate-800 to-slate-900 flex-1 flex items-center justify-center p-4 shadow-sm">
+                            <div class="text-center">
+                                <div class="w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center mx-auto mb-2">
+                                    <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                </div>
+                                <p class="text-white text-xs font-bold">Quick Deals</p>
+                                <p class="text-gray-400 text-[10px] mt-0.5">New listings daily</p>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+
+                <!-- Main Banner Carousel -->
+                <div class="flex-1 min-w-0 animate-[fadeIn_0.5s_ease-out]"
+                     x-data="{
+                        current: 0,
+                        total: {{ $banners->count() ?: 1 }},
+                        interval: null,
+                        next() { this.current = (this.current + 1) % this.total; },
+                        prev() { this.current = (this.current - 1 + this.total) % this.total; },
+                        goTo(i) { this.current = i; this.resetTimer(); },
+                        resetTimer() {
+                            if (this.interval) clearInterval(this.interval);
+                            this.startTimer();
+                        },
+                        startTimer() {
+                            if (this.total <= 1) return;
+                            this.interval = setInterval(() => this.next(), 5000);
+                        },
+                        init() { this.startTimer(); }
+                     }">
+                    <div class="relative rounded-xl overflow-hidden bg-slate-900 shadow-lg aspect-[16/7] sm:aspect-[16/6]">
+                        <!-- Brand Overlay -->
+                        <div class="absolute top-0 left-0 right-0 z-20 bg-gradient-to-b from-black/60 via-black/30 to-transparent px-4 sm:px-6 pt-3 pb-8 pointer-events-none">
+                            <div class="flex items-center gap-2">
+                                <span class="text-white font-extrabold text-sm sm:text-base tracking-tight">Phantom 5</span>
+                                <span class="hidden sm:inline text-white/50 text-xs">|</span>
+                                <span class="hidden sm:inline text-white/70 text-xs font-medium">Your Marketplace for Properties, Products & Services</span>
+                            </div>
+                        </div>
+
+                        @if($banners->count())
+                            @foreach($banners as $index => $banner)
+                            <div x-show="current === {{ $index }}"
+                                 x-transition:enter="transition-all ease-out duration-500"
+                                 x-transition:enter-start="opacity-0 scale-[1.02]"
+                                 x-transition:enter-end="opacity-100 scale-100"
+                                 x-transition:leave="transition-all ease-in duration-300"
+                                 x-transition:leave-start="opacity-100"
+                                 x-transition:leave-end="opacity-0"
+                                 class="absolute inset-0">
+                                @if($banner->link_url)
+                                <a href="{{ $banner->link_url }}" target="_blank" rel="noopener noreferrer" class="block w-full h-full">
+                                @endif
+                                    @if($banner->media_type === 'video')
+                                        <video src="{{ $banner->media_url }}" class="w-full h-full object-cover" autoplay muted loop playsinline></video>
+                                    @else
+                                        <img src="{{ $banner->media_url }}" class="w-full h-full object-cover" alt="{{ $banner->title }}">
+                                    @endif
+                                @if($banner->link_url)
+                                </a>
+                                @endif
+                            </div>
+                            @endforeach
+                        @else
+                            <div class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-amber-600 via-amber-500 to-orange-500">
+                                <div class="text-center text-white px-6">
+                                    <h2 class="text-2xl sm:text-4xl font-extrabold mb-2">Welcome to <span class="text-white">Phantom 5</span></h2>
+                                    <p class="text-white/80 text-sm sm:text-base max-w-md mx-auto">Your one-stop marketplace for properties, products & services</p>
+                                </div>
+                            </div>
+                        @endif
+
+                        @if($banners->count() > 1)
+                        <button @click="prev(); resetTimer();" class="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/40 hover:bg-black/60 text-white flex items-center justify-center backdrop-blur-sm transition z-10" style="opacity: 0.7;">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                        </button>
+                        <button @click="next(); resetTimer();" class="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/40 hover:bg-black/60 text-white flex items-center justify-center backdrop-blur-sm transition z-10" style="opacity: 0.7;">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </button>
+                        <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-10">
+                            @foreach($banners as $index => $banner)
+                            <button @click="goTo({{ $index }})"
+                                    class="h-2 rounded-full transition-all duration-300"
+                                    :class="current === {{ $index }} ? 'w-6 bg-amber-500' : 'w-2 bg-white/60 hover:bg-white/90'">
+                            </button>
+                            @endforeach
+                        </div>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <!-- Mobile Category Strip -->
+    <section class="lg:hidden bg-white border-b border-gray-100 py-3">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="flex gap-3 overflow-x-auto scrollbar-hide">
+                <a href="{{ route('properties.index') }}" class="flex items-center gap-2 px-4 py-2 bg-amber-50 rounded-full border border-amber-100 shrink-0 hover:bg-amber-100 transition">
+                    <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                    <span class="text-sm font-medium text-slate-700">Properties</span>
+                </a>
+                <a href="{{ route('products.index') }}" class="flex items-center gap-2 px-4 py-2 bg-blue-50 rounded-full border border-blue-100 shrink-0 hover:bg-blue-100 transition">
+                    <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                    <span class="text-sm font-medium text-slate-700">Products</span>
+                </a>
+                <a href="{{ route('services.index') }}" class="flex items-center gap-2 px-4 py-2 bg-emerald-50 rounded-full border border-emerald-100 shrink-0 hover:bg-emerald-100 transition">
+                    <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    <span class="text-sm font-medium text-slate-700">Services</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
 
     @php
         $rotationSeconds = (int) ($featuredSettings['rotation_seconds'] ?? 5);
@@ -32,6 +177,9 @@
         $servicesPerPage = (int) ($featuredSettings['services_per_page'] ?? 6);
         $servicesPerRow = (int) ($featuredSettings['services_per_row'] ?? 3);
 
+        $displayProperties = $featuredProperties->count() ? $featuredProperties : $latestProperties;
+        $displayProducts = $featuredProducts->count() ? $featuredProducts : $latestProducts;
+        $displayServices = $featuredServices->count() ? $featuredServices : $latestServices;
     @endphp
 
     <style>
@@ -80,7 +228,7 @@
     </script>
 
     <!-- Featured Properties -->
-    @if($featuredProperties->count())
+    @if($displayProperties->count())
     <section class="py-10 sm:py-16 lg:py-24 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center mb-6 sm:mb-10">
@@ -94,9 +242,9 @@
                 </a>
             </div>
 
-            <div x-data="featuredCarousel({{ $featuredProperties->count() }}, {{ $propertiesPerPage }}, {{ $rotationSeconds }})">
+            <div x-data="featuredCarousel({{ $displayProperties->count() }}, {{ $propertiesPerPage }}, {{ $rotationSeconds }})">
                 <div class="grid featured-grid-properties gap-8">
-                    @foreach($featuredProperties as $index => $property)
+                    @foreach($displayProperties as $index => $property)
                     <a href="{{ route('properties.show', $property) }}"
                        x-show="isVisible({{ $index }})"
                        x-transition:enter="transition ease-out duration-500"
@@ -134,7 +282,7 @@
     @endif
 
     <!-- Featured Products -->
-    @if($featuredProducts->count())
+    @if($displayProducts->count())
     <section class="py-10 sm:py-16 lg:py-24 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center mb-6 sm:mb-10">
@@ -148,9 +296,9 @@
                 </a>
             </div>
 
-            <div x-data="featuredCarousel({{ $featuredProducts->count() }}, {{ $productsPerPage }}, {{ $rotationSeconds }})">
+            <div x-data="featuredCarousel({{ $displayProducts->count() }}, {{ $productsPerPage }}, {{ $rotationSeconds }})">
                 <div class="grid featured-grid-products gap-6">
-                    @foreach($featuredProducts as $index => $product)
+                    @foreach($displayProducts as $index => $product)
                     <a href="{{ route('products.show', $product) }}"
                        x-show="isVisible({{ $index }})"
                        x-transition:enter="transition ease-out duration-500"
@@ -191,7 +339,7 @@
     @endif
 
     <!-- Featured Services -->
-    @if($featuredServices->count())
+    @if($displayServices->count())
     <section class="py-10 sm:py-16 lg:py-24 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center mb-6 sm:mb-10">
@@ -205,9 +353,9 @@
                 </a>
             </div>
 
-            <div x-data="featuredCarousel({{ $featuredServices->count() }}, {{ $servicesPerPage }}, {{ $rotationSeconds }})">
+            <div x-data="featuredCarousel({{ $displayServices->count() }}, {{ $servicesPerPage }}, {{ $rotationSeconds }})">
                 <div class="grid featured-grid-services gap-8">
-                    @foreach($featuredServices as $index => $service)
+                    @foreach($displayServices as $index => $service)
                     <a href="{{ route('services.show', $service) }}"
                        x-show="isVisible({{ $index }})"
                        x-transition:enter="transition ease-out duration-500"
@@ -238,6 +386,25 @@
                         </button>
                     </template>
                 </div>
+            </div>
+        </div>
+    </section>
+    @endif
+
+    <!-- Ad Banners Strip (above footer) -->
+    @if($banners->count())
+    <section class="py-6 sm:py-8 bg-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
+                @foreach($banners->take(5) as $banner)
+                <a href="{{ $banner->link_url ?? '#' }}" target="_blank" rel="noopener noreferrer" class="block rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition duration-300 group">
+                    @if($banner->media_type === 'video')
+                        <video src="{{ $banner->media_url }}" class="w-full h-32 sm:h-36 object-cover group-hover:scale-105 transition duration-500" autoplay muted loop playsinline></video>
+                    @else
+                        <img src="{{ $banner->media_url }}" class="w-full h-32 sm:h-36 object-cover group-hover:scale-105 transition duration-500" alt="{{ $banner->title }}">
+                    @endif
+                </a>
+                @endforeach
             </div>
         </div>
     </section>

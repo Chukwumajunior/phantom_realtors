@@ -81,6 +81,12 @@ class ServiceFactory extends Factory
             'listing_status' => ListingStatus::Active,
             'service_area' => fake()->randomElement(['Lagos', 'Lagos & Ogun', 'Nationwide', 'South-West Nigeria']),
             'highlights' => fake()->randomElements(['Fast delivery', 'Quality materials', 'Experienced team', 'Warranty included', '24/7 support'], 3),
+            'location_house_number' => fake()->buildingNumber(),
+            'location_street_name' => fake()->streetName(),
+            'location_area' => fake()->randomElement(['Bariga', 'Surulere', 'Ikeja', 'Yaba', 'Lekki', 'Ajah', 'Victoria Island']),
+            'location_lga' => fake()->randomElement(['Somolu', 'Surulere', 'Ikeja', 'Lagos Mainland', 'Eti-Osa', 'Alimosho']),
+            'location_state' => fake()->randomElement(['Lagos', 'Abuja', 'Rivers', 'Ogun', 'Oyo']),
+            'location_country' => 'Nigeria',
             'is_featured' => fake()->boolean(20),
             'views_count' => fake()->numberBetween(0, 150),
         ];

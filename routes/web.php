@@ -2,11 +2,11 @@
 
 use App\Http\Controllers\Admin;
 use App\Http\Controllers\Auth\GoogleController;
-use App\Http\Controllers\BecomeMerchantController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Merchant;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PosterProfileController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PropertyController;
@@ -68,10 +68,6 @@ Route::post('/contact', [ContactController::class, 'submitForm'])->name('contact
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', \App\Livewire\ProfilePage::class)->name('profile.edit');
     Route::get('/guide', fn() => view('pages.guide'))->name('user-guide');
-
-    // Become a Merchant (for customers who want to sell)
-    Route::get('/become-a-seller', [BecomeMerchantController::class, 'create'])->name('become-seller');
-    Route::post('/become-a-seller', [BecomeMerchantController::class, 'store'])->name('become-seller.store');
 });
 
 // =============================================
@@ -86,53 +82,50 @@ Route::middleware(['auth', 'verified', 'role:customer,merchant,admin'])->prefix(
 });
 
 // =============================================
-// MERCHANT ROUTES (also accessible by admin)
+// MERCHANT / POSTER ROUTES (any authenticated user)
 // =============================================
-Route::middleware(['auth', 'verified', 'role:merchant,admin'])->prefix('merchant')->name('merchant.')->group(function () {
-    // Pending approval page (accessible before approval)
-    Route::get('/pending-approval', fn() => view('merchant.pending-approval'))->name('pending-approval');
+Route::middleware(['auth', 'verified'])->prefix('merchant')->name('merchant.')->group(function () {
+    // Poster profile setup (replaces become-a-seller)
+    Route::get('/setup', [PosterProfileController::class, 'create'])->name('setup');
+    Route::post('/setup', [PosterProfileController::class, 'store'])->name('setup.store');
 
-    // Subscription pages (accessible before subscription is active)
-    Route::get('/subscription', [Merchant\SubscriptionController::class, 'index'])->name('subscription.index');
-    Route::get('/subscription/expired', [Merchant\SubscriptionController::class, 'expired'])->name('subscription.expired');
-
-    // Approved merchant routes
-    Route::middleware('merchant.approved')->group(function () {
+    // Routes requiring a poster profile
+    Route::middleware('poster.profile')->group(function () {
         Route::get('/dashboard', [Merchant\MerchantDashboardController::class, 'index'])->name('dashboard');
 
         // Business Profile
-        Route::get('/profile', [Merchant\MerchantProfileController::class, 'edit'])->name('profile.edit');
-        Route::patch('/profile', [Merchant\MerchantProfileController::class, 'update'])->name('profile.update');
+        Route::get('/profile', [PosterProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [PosterProfileController::class, 'update'])->name('profile.update');
 
-        // Properties - index/show: no subscription needed (delete handled by Livewire)
+        // Listing indexes (always accessible)
         Route::get('/properties', PropertyList::class)->name('properties.index');
-
-        // Products - index: no subscription needed (delete handled by Livewire)
         Route::get('/products', ProductList::class)->name('products.index');
-
-        // Services - index: no subscription needed (delete handled by Livewire)
         Route::get('/services', ServiceList::class)->name('services.index');
 
-        // create/store/edit/update: requires active subscription
-        Route::middleware('subscription.active')->group(function () {
+        // Create/store routes: requires tier limit check
+        Route::middleware('tier.limits')->group(function () {
             // Properties
             Route::get('/properties/create', [Merchant\MerchantPropertyController::class, 'create'])->name('properties.create');
             Route::post('/properties', [Merchant\MerchantPropertyController::class, 'store'])->name('properties.store');
-            Route::get('/properties/{property}/edit', [Merchant\MerchantPropertyController::class, 'edit'])->name('properties.edit');
-            Route::put('/properties/{property}', [Merchant\MerchantPropertyController::class, 'update'])->name('properties.update');
 
             // Products
             Route::get('/products/create', [Merchant\MerchantProductController::class, 'create'])->name('products.create');
             Route::post('/products', [Merchant\MerchantProductController::class, 'store'])->name('products.store');
-            Route::get('/products/{product}/edit', [Merchant\MerchantProductController::class, 'edit'])->name('products.edit');
-            Route::put('/products/{product}', [Merchant\MerchantProductController::class, 'update'])->name('products.update');
 
             // Services
             Route::get('/services/create', [Merchant\MerchantServiceController::class, 'create'])->name('services.create');
             Route::post('/services', [Merchant\MerchantServiceController::class, 'store'])->name('services.store');
-            Route::get('/services/{service}/edit', [Merchant\MerchantServiceController::class, 'edit'])->name('services.edit');
-            Route::put('/services/{service}', [Merchant\MerchantServiceController::class, 'update'])->name('services.update');
         });
+
+        // Edit/update routes: no tier limit (users can always edit their posts)
+        Route::get('/properties/{property}/edit', [Merchant\MerchantPropertyController::class, 'edit'])->name('properties.edit');
+        Route::put('/properties/{property}', [Merchant\MerchantPropertyController::class, 'update'])->name('properties.update');
+
+        Route::get('/products/{product}/edit', [Merchant\MerchantProductController::class, 'edit'])->name('products.edit');
+        Route::put('/products/{product}', [Merchant\MerchantProductController::class, 'update'])->name('products.update');
+
+        Route::get('/services/{service}/edit', [Merchant\MerchantServiceController::class, 'edit'])->name('services.edit');
+        Route::put('/services/{service}', [Merchant\MerchantServiceController::class, 'update'])->name('services.update');
     });
 });
 
@@ -148,9 +141,13 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::patch('/users/{user}/suspend', [Admin\UserManagementController::class, 'suspend'])->name('users.suspend');
     Route::patch('/users/{user}/unsuspend', [Admin\UserManagementController::class, 'unsuspend'])->name('users.unsuspend');
 
-    // Merchant Approvals
+    // Merchant/Poster Management
     Route::get('/merchants', \App\Livewire\Admin\MerchantList::class)->name('merchants.index');
     Route::get('/merchants/{merchantProfile}', \App\Livewire\Admin\MerchantDetail::class)->name('merchants.show');
+
+    // Listing Moderation
+    Route::post('/listings/{type}/{id}/unpublish', [Admin\ListingModerationController::class, 'unpublish'])->name('listings.unpublish');
+    Route::post('/listings/{type}/{id}/republish', [Admin\ListingModerationController::class, 'republish'])->name('listings.republish');
 
     // Payment Confirmations
     Route::get('/payments', [Admin\PaymentConfirmationController::class, 'index'])->name('payments.index');
@@ -168,12 +165,9 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::get('/inquiries/{inquiry}', [Admin\InquiryController::class, 'show'])->name('inquiries.show');
     Route::patch('/inquiries/{inquiry}', [Admin\InquiryController::class, 'update'])->name('inquiries.update');
 
-    // Subscription Plans
-    Route::resource('subscription-plans', Admin\SubscriptionPlanController::class)->except(['show']);
-
-    // Subscription Management
-    Route::get('/subscriptions', \App\Livewire\Admin\SubscriptionManagement::class)->name('subscriptions.index');
-
     // Site Settings
     Route::get('/settings', \App\Livewire\Admin\SiteSettings::class)->name('settings.index');
+
+    // Banner Management
+    Route::get('/banners', \App\Livewire\Admin\BannerManagement::class)->name('banners.index');
 });

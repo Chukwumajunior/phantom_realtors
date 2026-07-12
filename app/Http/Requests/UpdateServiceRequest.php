@@ -12,7 +12,7 @@ class UpdateServiceRequest extends FormRequest
     public function authorize(): bool
     {
         return $this->user()->isAdmin() ||
-               ($this->user()->isMerchant() && $this->route('service')->user_id === $this->user()->id);
+               ($this->user()->merchantProfile && $this->route('service')->user_id === $this->user()->id);
     }
 
     protected function prepareForValidation(): void
@@ -43,6 +43,13 @@ class UpdateServiceRequest extends FormRequest
             'is_negotiable' => ['boolean'],
             'service_area' => ['nullable', 'string', 'max:255'],
             'highlights' => ['nullable', 'array'],
+            'location_house_number' => ['required', 'string', 'max:50'],
+            'location_street_name' => ['required', 'string', 'max:255'],
+            'location_area' => ['required', 'string', 'max:100'],
+            'location_lga' => ['required', 'string', 'max:100'],
+            'location_state' => ['required', 'string', 'max:100'],
+            'location_zip_code' => ['nullable', 'string', 'max:20'],
+            'location_country' => ['required', 'string', 'max:100'],
             'images' => ['nullable', 'array', 'max:4'],
             'images.*' => ['image', 'max:3072'],
         ];

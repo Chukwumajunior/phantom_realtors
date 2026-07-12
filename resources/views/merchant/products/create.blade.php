@@ -5,7 +5,10 @@
 
     <div class="py-8">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <form action="{{ route('merchant.products.store') }}" method="POST" enctype="multipart/form-data" class="space-y-8">
+            <x-posting-policy />
+
+            <form action="{{ route('merchant.products.store') }}" method="POST" enctype="multipart/form-data" class="space-y-8"
+                x-data="{ selectedCategory: '{{ old('category', '') }}', hierarchy: {{ Js::from(\App\Enums\ProductCategory::hierarchy()) }} }">
                 @csrf
 
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
@@ -27,7 +30,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label for="category" class="block text-sm font-medium text-gray-700 mb-2">Category</label>
-                                <select id="category" name="category" required class="w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500">
+                                <select id="category" name="category" required x-model="selectedCategory" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500">
                                     <option value="">Select Category</option>
                                     @foreach(\App\Enums\ProductCategory::cases() as $category)
                                         <option value="{{ $category->value }}" {{ old('category') === $category->value ? 'selected' : '' }}>{{ $category->label() }}</option>
@@ -36,6 +39,23 @@
                                 @error('category') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                             </div>
 
+                            <div>
+                                <label for="sub_category" class="block text-sm font-medium text-gray-700 mb-2">Sub-Category</label>
+                                <select id="sub_category" name="sub_category" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500">
+                                    <option value="">Select Sub-Category</option>
+                                    <template x-for="cat in hierarchy" :key="cat.value">
+                                        <template x-if="cat.value === selectedCategory">
+                                            <template x-for="sub in cat.sub_categories" :key="sub.value">
+                                                <option :value="sub.value" x-text="sub.label" :selected="sub.value === '{{ old('sub_category', '') }}'"></option>
+                                            </template>
+                                        </template>
+                                    </template>
+                                </select>
+                                @error('sub_category') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label for="price" class="block text-sm font-medium text-gray-700 mb-2">Price</label>
                                 <div class="flex gap-2">
@@ -49,15 +69,15 @@
                                 @error('price') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                                 @error('currency') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                             </div>
-                        </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div>
                                 <label for="stock_quantity" class="block text-sm font-medium text-gray-700 mb-2">Stock Quantity</label>
                                 <input type="number" id="stock_quantity" name="stock_quantity" value="{{ old('stock_quantity') }}" min="0" required class="w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500">
                                 @error('stock_quantity') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                             </div>
+                        </div>
 
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label for="brand" class="block text-sm font-medium text-gray-700 mb-2">Brand</label>
                                 <input type="text" id="brand" name="brand" value="{{ old('brand') }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500">
@@ -78,6 +98,11 @@
                     </div>
                 </div>
 
+                <!-- Location Section -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                    <x-location-fields prefix="location_" />
+                </div>
+
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                     <h3 class="text-lg font-bold text-slate-900 mb-6">Specifications & Images</h3>
 
@@ -92,7 +117,7 @@
                         <div>
                             <label for="images" class="block text-sm font-medium text-gray-700 mb-2">Product Images</label>
                             <input type="file" id="images" name="images[]" multiple accept="image/*" class="w-full rounded-lg border border-gray-300 p-2 text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-amber-50 file:text-amber-700 file:font-medium hover:file:bg-amber-100">
-                            <p class="mt-1 text-sm text-gray-500">Upload multiple images. Max 5MB each.</p>
+                            <p class="mt-1 text-sm text-gray-500">Upload 1-4 images. Max 3MB each.</p>
                             @error('images') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                             @error('images.*') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                         </div>

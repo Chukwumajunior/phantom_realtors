@@ -3,7 +3,6 @@
 namespace App\Livewire\Admin;
 
 use App\Models\SiteConfig;
-use App\Models\SubscriptionPlan;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -18,15 +17,23 @@ class SiteSettings extends Component
     public string $account_name = '';
     public string $account_number = '';
 
-    // New plan form
-    public string $newPlanName = '';
-    public string $newPlanPrice = '';
-    public string $newPlanDuration = '';
-    public string $newPlanDescription = '';
-    public bool $newPlanIsPremium = false;
+    // Tier pricing
+    public string $tier2Price = '';
+    public string $tier3Price = '';
 
-    // Edit plan data (keyed by plan ID)
-    public array $planData = [];
+    // Tier descriptions
+    public string $tier1Name = '';
+    public int $tier1Posts = 1;
+    public int $tier1Categories = 1;
+    public string $tier1Description = '';
+
+    public string $tier2Name = '';
+    public int $tier2Posts = 3;
+    public int $tier2Categories = 3;
+    public string $tier2Description = '';
+
+    public string $tier3Name = '';
+    public string $tier3Description = '';
 
     // Featured settings
     public int $maxPerMerchant = 10;
@@ -45,6 +52,23 @@ class SiteSettings extends Component
         $this->account_name = $bankDetails['account_name'] ?? '';
         $this->account_number = $bankDetails['account_number'] ?? '';
 
+        $tierSettings = SiteConfig::getTierSettings();
+        $this->tier2Price = (string) ($tierSettings['tier_2_price'] ?? 10000);
+        $this->tier3Price = (string) ($tierSettings['tier_3_price'] ?? 25000);
+
+        $this->tier1Name = $tierSettings['tier_1']['name'] ?? 'Tier 1 - Basic';
+        $this->tier1Posts = (int) ($tierSettings['tier_1']['posts'] ?? 1);
+        $this->tier1Categories = (int) ($tierSettings['tier_1']['categories'] ?? 1);
+        $this->tier1Description = $tierSettings['tier_1']['description'] ?? '';
+
+        $this->tier2Name = $tierSettings['tier_2']['name'] ?? 'Tier 2 - Standard';
+        $this->tier2Posts = (int) ($tierSettings['tier_2']['posts'] ?? 3);
+        $this->tier2Categories = (int) ($tierSettings['tier_2']['categories'] ?? 3);
+        $this->tier2Description = $tierSettings['tier_2']['description'] ?? '';
+
+        $this->tier3Name = $tierSettings['tier_3']['name'] ?? 'Tier 3 - Unlimited';
+        $this->tier3Description = $tierSettings['tier_3']['description'] ?? '';
+
         $featuredSettings = SiteConfig::getFeaturedSettings();
         $this->maxPerMerchant = (int) $featuredSettings['max_per_merchant'];
         $this->rotationSeconds = (int) $featuredSettings['rotation_seconds'];
@@ -54,24 +78,6 @@ class SiteSettings extends Component
         $this->productsPerRow = (int) $featuredSettings['products_per_row'];
         $this->servicesPerPage = (int) $featuredSettings['services_per_page'];
         $this->servicesPerRow = (int) $featuredSettings['services_per_row'];
-
-        $this->loadPlans();
-    }
-
-    protected function loadPlans(): void
-    {
-        $plans = SubscriptionPlan::orderBy('price')->get();
-        $this->planData = [];
-        foreach ($plans as $plan) {
-            $this->planData[$plan->id] = [
-                'name' => $plan->name,
-                'price' => $plan->price,
-                'duration_days' => $plan->duration_days,
-                'description' => $plan->description ?? '',
-                'is_active' => $plan->is_active,
-                'is_premium' => $plan->is_premium,
-            ];
-        }
     }
 
     public function saveBankDetails(): void
@@ -92,74 +98,47 @@ class SiteSettings extends Component
         $this->notificationType = 'success';
     }
 
-    public function savePlan(int $planId): void
-    {
-        $data = $this->planData[$planId] ?? null;
-
-        if (!$data) {
-            $this->notification = 'Plan not found.';
-            $this->notificationType = 'error';
-            return;
-        }
-
-        $this->validate([
-            "planData.{$planId}.name" => ['required', 'string', 'max:255'],
-            "planData.{$planId}.price" => ['required', 'numeric', 'min:0'],
-            "planData.{$planId}.duration_days" => ['required', 'integer', 'min:1'],
-            "planData.{$planId}.description" => ['nullable', 'string', 'max:1000'],
-        ]);
-
-        $plan = SubscriptionPlan::findOrFail($planId);
-        $plan->update([
-            'name' => $data['name'],
-            'price' => $data['price'],
-            'duration_days' => $data['duration_days'],
-            'description' => $data['description'] ?: null,
-            'is_active' => $data['is_active'] ?? true,
-            'is_premium' => $data['is_premium'] ?? false,
-        ]);
-
-        $this->notification = "Plan \"{$plan->name}\" updated successfully.";
-        $this->notificationType = 'success';
-    }
-
-    public function addPlan(): void
+    public function saveTierSettings(): void
     {
         $this->validate([
-            'newPlanName' => ['required', 'string', 'max:255'],
-            'newPlanPrice' => ['required', 'numeric', 'min:0'],
-            'newPlanDuration' => ['required', 'integer', 'min:1'],
-            'newPlanDescription' => ['nullable', 'string', 'max:1000'],
+            'tier2Price' => ['required', 'numeric', 'min:0'],
+            'tier3Price' => ['required', 'numeric', 'min:0'],
+            'tier1Name' => ['required', 'string', 'max:100'],
+            'tier1Posts' => ['required', 'integer', 'min:1', 'max:100'],
+            'tier1Categories' => ['required', 'integer', 'min:1', 'max:100'],
+            'tier1Description' => ['required', 'string', 'max:500'],
+            'tier2Name' => ['required', 'string', 'max:100'],
+            'tier2Posts' => ['required', 'integer', 'min:1', 'max:100'],
+            'tier2Categories' => ['required', 'integer', 'min:1', 'max:100'],
+            'tier2Description' => ['required', 'string', 'max:500'],
+            'tier3Name' => ['required', 'string', 'max:100'],
+            'tier3Description' => ['required', 'string', 'max:500'],
         ]);
 
-        SubscriptionPlan::create([
-            'name' => $this->newPlanName,
-            'price' => $this->newPlanPrice,
-            'duration_days' => $this->newPlanDuration,
-            'description' => $this->newPlanDescription ?: null,
-            'is_active' => true,
-            'is_premium' => $this->newPlanIsPremium,
+        SiteConfig::set('tier_settings', [
+            'tier_2_price' => (int) $this->tier2Price,
+            'tier_3_price' => (int) $this->tier3Price,
+            'tier_1' => [
+                'name' => $this->tier1Name,
+                'posts' => $this->tier1Posts,
+                'categories' => $this->tier1Categories,
+                'description' => $this->tier1Description,
+            ],
+            'tier_2' => [
+                'name' => $this->tier2Name,
+                'posts' => $this->tier2Posts,
+                'categories' => $this->tier2Categories,
+                'description' => $this->tier2Description,
+            ],
+            'tier_3' => [
+                'name' => $this->tier3Name,
+                'posts' => null,
+                'categories' => null,
+                'description' => $this->tier3Description,
+            ],
         ]);
 
-        $this->newPlanName = '';
-        $this->newPlanPrice = '';
-        $this->newPlanDuration = '';
-        $this->newPlanDescription = '';
-        $this->newPlanIsPremium = false;
-
-        $this->loadPlans();
-        $this->notification = 'New subscription plan created.';
-        $this->notificationType = 'success';
-    }
-
-    public function deletePlan(int $planId): void
-    {
-        $plan = SubscriptionPlan::findOrFail($planId);
-        $planName = $plan->name;
-        $plan->delete();
-
-        $this->loadPlans();
-        $this->notification = "Plan \"{$planName}\" deleted.";
+        $this->notification = 'Tier settings updated successfully.';
         $this->notificationType = 'success';
     }
 
@@ -193,9 +172,7 @@ class SiteSettings extends Component
 
     public function render()
     {
-        $plans = SubscriptionPlan::orderBy('price')->get();
-
-        return view('livewire.admin.site-settings', compact('plans'))
+        return view('livewire.admin.site-settings')
             ->title('Site Settings');
     }
 }

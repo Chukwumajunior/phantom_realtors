@@ -5,6 +5,8 @@
 
     <div class="py-8">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <x-posting-policy />
+
             <form action="{{ route('merchant.properties.store') }}" method="POST" enctype="multipart/form-data" class="space-y-8">
                 @csrf
 

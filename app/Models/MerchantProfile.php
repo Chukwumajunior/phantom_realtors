@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\MerchantStatus;
+use App\Enums\PosterTier;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -20,36 +21,32 @@ class MerchantProfile extends Model
         'business_email',
         'logo',
         'status',
-        'approved_at',
-        'approved_by',
-        'rejection_reason',
-        'subscription_plan_id',
+        'tier',
+        'company_name',
+        'cac_document',
         'payment_proof',
         'payment_reference',
-        'amount_paid',
+        'nin',
+        'house_number',
+        'street_name',
+        'area',
+        'lga',
+        'state',
+        'zip_code',
+        'country',
     ];
 
     protected function casts(): array
     {
         return [
             'status' => MerchantStatus::class,
-            'approved_at' => 'datetime',
+            'tier' => PosterTier::class,
         ];
     }
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function approvedByUser(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'approved_by');
-    }
-
-    public function subscriptionPlan(): BelongsTo
-    {
-        return $this->belongsTo(SubscriptionPlan::class);
     }
 
     public function isApproved(): bool
@@ -62,6 +59,23 @@ class MerchantProfile extends Model
         return $this->status === MerchantStatus::Pending;
     }
 
+    /**
+     * Get the full formatted address.
+     */
+    public function getFullAddressAttribute(): string
+    {
+        $parts = array_filter([
+            $this->house_number,
+            $this->street_name,
+            $this->area,
+            $this->lga,
+            $this->state,
+            $this->country,
+        ]);
+
+        return implode(', ', $parts);
+    }
+
     // Scopes
     public function scopePending($query)
     {
@@ -71,5 +85,10 @@ class MerchantProfile extends Model
     public function scopeApproved($query)
     {
         return $query->where('status', MerchantStatus::Approved);
+    }
+
+    public function scopeOfTier($query, PosterTier $tier)
+    {
+        return $query->where('tier', $tier);
     }
 }

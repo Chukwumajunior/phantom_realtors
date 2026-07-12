@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Enums\Currency;
 use App\Enums\ProductCategory;
+use App\Enums\ProductSubCategory;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -11,7 +12,7 @@ class StoreProductRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()->isMerchant() || $this->user()->isAdmin();
+        return $this->user()->merchantProfile !== null || $this->user()->isAdmin();
     }
 
     protected function prepareForValidation(): void
@@ -38,12 +39,20 @@ class StoreProductRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string', 'min:20'],
             'category' => ['required', Rule::enum(ProductCategory::class)],
+            'sub_category' => ['nullable', Rule::enum(ProductSubCategory::class)],
             'price' => ['required', 'numeric', 'min:0'],
             'currency' => ['nullable', Rule::enum(Currency::class)],
             'stock_quantity' => ['required', 'integer', 'min:0'],
             'brand' => ['nullable', 'string', 'max:100'],
             'condition' => ['nullable', 'string', 'in:new,used,refurbished'],
             'specifications' => ['nullable', 'array'],
+            'location_house_number' => ['required', 'string', 'max:50'],
+            'location_street_name' => ['required', 'string', 'max:255'],
+            'location_area' => ['required', 'string', 'max:100'],
+            'location_lga' => ['required', 'string', 'max:100'],
+            'location_state' => ['required', 'string', 'max:100'],
+            'location_zip_code' => ['nullable', 'string', 'max:20'],
+            'location_country' => ['required', 'string', 'max:100'],
             'images' => ['required', 'array', 'min:1', 'max:4'],
             'images.*' => ['image', 'max:3072'],
         ];

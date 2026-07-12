@@ -32,7 +32,7 @@
                         </div>
                         <div>
                             <h3 class="text-base font-bold text-slate-900">Bank Account Details</h3>
-                            <p class="text-sm text-gray-500">Payment account shown to merchants during application and subscription renewal.</p>
+                            <p class="text-sm text-gray-500">Payment account shown to users during tier upgrades.</p>
                         </div>
                     </div>
                 </div>
@@ -40,20 +40,20 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                         <div>
                             <x-input-label for="bank_name" :value="__('Bank Name')" />
-                            <x-text-input id="bank_name" class="block mt-1.5 w-full" type="text" wire:model="bank_name" required placeholder="e.g. First Bank Nigeria" />
+                            <x-text-input id="bank_name" class="block mt-1.5 w-full" type="text" wire:model="bank_name" required placeholder="e.g. OPay" />
                             @error('bank_name') <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p> @enderror
                         </div>
 
                         <div>
                             <x-input-label for="account_name" :value="__('Account Name')" />
-                            <x-text-input id="account_name" class="block mt-1.5 w-full" type="text" wire:model="account_name" required placeholder="e.g. Phantom 5 Ltd" />
+                            <x-text-input id="account_name" class="block mt-1.5 w-full" type="text" wire:model="account_name" required placeholder="e.g. PHANTOM 5 REALTORS CONCEPTS" />
                             @error('account_name') <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p> @enderror
                         </div>
                     </div>
 
                     <div>
                         <x-input-label for="account_number" :value="__('Account Number')" />
-                        <x-text-input id="account_number" class="block mt-1.5 w-full sm:max-w-xs" type="text" wire:model="account_number" required placeholder="e.g. 0123456789" />
+                        <x-text-input id="account_number" class="block mt-1.5 w-full sm:max-w-xs" type="text" wire:model="account_number" required placeholder="e.g. 6142210881" />
                         @error('account_number') <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p> @enderror
                     </div>
 
@@ -69,118 +69,132 @@
                 </form>
             </div>
 
-            {{-- Subscription Plans --}}
+            {{-- Tier Configuration --}}
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 <div class="px-6 sm:px-8 py-5 border-b border-gray-100">
                     <div class="flex items-center gap-3">
-                        <div class="w-9 h-9 rounded-lg bg-slate-100 flex items-center justify-center shrink-0">
-                            <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                        <div class="w-9 h-9 rounded-lg bg-purple-50 flex items-center justify-center shrink-0">
+                            <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
                         </div>
                         <div>
-                            <h3 class="text-base font-bold text-slate-900">Subscription Plans</h3>
-                            <p class="text-sm text-gray-500">Set pricing and duration for merchant subscription plans.</p>
+                            <h3 class="text-base font-bold text-slate-900">Tier Configuration</h3>
+                            <p class="text-sm text-gray-500">Set pricing and capabilities for each poster tier.</p>
                         </div>
                     </div>
                 </div>
+                <form wire:submit="saveTierSettings" class="p-6 sm:p-8 space-y-6">
+                    {{-- Tier Pricing --}}
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-900 mb-4">Tier Pricing</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                            <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                                <p class="text-sm font-semibold text-gray-700 mb-1">Tier 1</p>
+                                <p class="text-2xl font-bold text-green-600">FREE</p>
+                            </div>
+                            <div>
+                                <x-input-label :value="__('Tier 2 Price (NGN)')" />
+                                <x-text-input class="block mt-1.5 w-full" type="number" wire:model="tier2Price" min="0" step="100" required />
+                                @error('tier2Price') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                            </div>
+                            <div>
+                                <x-input-label :value="__('Tier 3 Price (NGN)')" />
+                                <x-text-input class="block mt-1.5 w-full" type="number" wire:model="tier3Price" min="0" step="100" required />
+                                @error('tier3Price') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                            </div>
+                        </div>
+                    </div>
 
-                <div class="divide-y divide-gray-100">
-                    @forelse($plans as $plan)
-                    <div class="p-6 sm:p-8 hover:bg-gray-50/50 transition-colors" wire:key="plan-{{ $plan->id }}">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
-                            <div>
-                                <x-input-label :value="__('Plan Name')" />
-                                <x-text-input class="block mt-1.5 w-full" type="text" wire:model="planData.{{ $plan->id }}.name" required />
-                            </div>
-                            <div>
-                                <x-input-label :value="__('Price (NGN)')" />
-                                <x-text-input class="block mt-1.5 w-full" type="number" wire:model="planData.{{ $plan->id }}.price" step="0.01" min="0" required />
-                            </div>
-                            <div>
-                                <x-input-label :value="__('Duration (days)')" />
-                                <x-text-input class="block mt-1.5 w-full" type="number" wire:model="planData.{{ $plan->id }}.duration_days" min="1" required />
-                            </div>
-                            <div class="flex items-center gap-3 flex-wrap">
-                                <label class="flex items-center gap-2 cursor-pointer">
-                                    <input type="checkbox" wire:model="planData.{{ $plan->id }}.is_active" class="w-4 h-4 rounded border-gray-300 text-amber-600 focus:ring-amber-500">
-                                    <span class="text-sm text-gray-700">Active</span>
-                                </label>
-                                <label class="flex items-center gap-2 cursor-pointer">
-                                    <input type="checkbox" wire:model="planData.{{ $plan->id }}.is_premium" class="w-4 h-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500">
-                                    <span class="text-sm text-purple-700 font-medium">Premium</span>
-                                </label>
-                                <button
-                                    type="button"
-                                    wire:click="savePlan({{ $plan->id }})"
-                                    wire:loading.attr="disabled"
-                                    class="inline-flex items-center px-3 py-1.5 bg-amber-600 rounded-lg text-xs font-semibold text-white hover:bg-amber-700 transition disabled:opacity-50"
-                                >
-                                    <span wire:loading.remove wire:target="savePlan({{ $plan->id }})">Save</span>
-                                    <span wire:loading wire:target="savePlan({{ $plan->id }})">...</span>
-                                </button>
-                                <button
-                                    type="button"
-                                    wire:click="deletePlan({{ $plan->id }})"
-                                    wire:confirm="Are you sure you want to delete this plan?"
-                                    class="text-red-600 hover:text-red-700 text-xs font-semibold transition"
-                                >
-                                    Delete
-                                </button>
-                            </div>
+                    {{-- Tier 1 Configuration --}}
+                    <div class="border-t border-gray-100 pt-6">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs font-bold text-gray-700">1</span>
+                            <h4 class="text-sm font-bold text-slate-900">Tier 1 - Free</h4>
                         </div>
-                        <div class="mt-3">
-                            <x-input-label :value="__('Description (optional)')" />
-                            <x-text-input class="block mt-1.5 w-full" type="text" wire:model="planData.{{ $plan->id }}.description" placeholder="Brief description of this plan" />
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div>
+                                <x-input-label :value="__('Display Name')" />
+                                <x-text-input class="block mt-1.5 w-full" type="text" wire:model="tier1Name" required />
+                                @error('tier1Name') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                            </div>
+                            <div>
+                                <x-input-label :value="__('Max Posts')" />
+                                <x-text-input class="block mt-1.5 w-full" type="number" wire:model="tier1Posts" min="1" max="100" required />
+                                @error('tier1Posts') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                            </div>
+                            <div>
+                                <x-input-label :value="__('Max Categories')" />
+                                <x-text-input class="block mt-1.5 w-full" type="number" wire:model="tier1Categories" min="1" max="100" required />
+                                @error('tier1Categories') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                            </div>
+                            <div class="sm:col-span-2 lg:col-span-1">
+                                <x-input-label :value="__('Description')" />
+                                <x-text-input class="block mt-1.5 w-full" type="text" wire:model="tier1Description" required />
+                                @error('tier1Description') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                            </div>
                         </div>
                     </div>
-                    @empty
-                    <div class="p-8 text-center">
-                        <div class="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center mx-auto mb-3">
-                            <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg>
-                        </div>
-                        <p class="text-sm text-gray-500">No subscription plans yet. Add one below.</p>
-                    </div>
-                    @endforelse
-                </div>
 
-                {{-- Add New Plan --}}
-                <div class="p-6 sm:p-8 border-t border-gray-100 bg-gray-50/50">
-                    <div class="flex items-center gap-2 mb-4">
-                        <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
-                        <h4 class="text-sm font-bold text-slate-900">Add New Plan</h4>
+                    {{-- Tier 2 Configuration --}}
+                    <div class="border-t border-gray-100 pt-6">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-xs font-bold text-blue-700">2</span>
+                            <h4 class="text-sm font-bold text-slate-900">Tier 2 - Paid</h4>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div>
+                                <x-input-label :value="__('Display Name')" />
+                                <x-text-input class="block mt-1.5 w-full" type="text" wire:model="tier2Name" required />
+                                @error('tier2Name') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                            </div>
+                            <div>
+                                <x-input-label :value="__('Max Posts')" />
+                                <x-text-input class="block mt-1.5 w-full" type="number" wire:model="tier2Posts" min="1" max="100" required />
+                                @error('tier2Posts') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                            </div>
+                            <div>
+                                <x-input-label :value="__('Max Categories')" />
+                                <x-text-input class="block mt-1.5 w-full" type="number" wire:model="tier2Categories" min="1" max="100" required />
+                                @error('tier2Categories') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                            </div>
+                            <div class="sm:col-span-2 lg:col-span-1">
+                                <x-input-label :value="__('Description')" />
+                                <x-text-input class="block mt-1.5 w-full" type="text" wire:model="tier2Description" required />
+                                @error('tier2Description') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                            </div>
+                        </div>
                     </div>
-                    <form wire:submit="addPlan">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
+
+                    {{-- Tier 3 Configuration --}}
+                    <div class="border-t border-gray-100 pt-6">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center text-xs font-bold text-purple-700">3</span>
+                            <h4 class="text-sm font-bold text-slate-900">Tier 3 - Paid (Unlimited)</h4>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <x-input-label :value="__('Plan Name')" />
-                                <x-text-input class="block mt-1.5 w-full" type="text" wire:model="newPlanName" required placeholder="e.g. Quarterly Plan" />
+                                <x-input-label :value="__('Display Name')" />
+                                <x-text-input class="block mt-1.5 w-full" type="text" wire:model="tier3Name" required />
+                                @error('tier3Name') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                             </div>
                             <div>
-                                <x-input-label :value="__('Price (NGN)')" />
-                                <x-text-input class="block mt-1.5 w-full" type="number" wire:model="newPlanPrice" step="0.01" min="0" required placeholder="e.g. 15000" />
-                            </div>
-                            <div>
-                                <x-input-label :value="__('Duration (days)')" />
-                                <x-text-input class="block mt-1.5 w-full" type="number" wire:model="newPlanDuration" min="1" required placeholder="e.g. 90" />
-                            </div>
-                            <div class="flex flex-col gap-2">
-                                <label class="flex items-center gap-2 cursor-pointer">
-                                    <input type="checkbox" wire:model="newPlanIsPremium" class="w-4 h-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500">
-                                    <span class="text-sm text-purple-700 font-medium">Premium</span>
-                                </label>
-                                <button type="submit" wire:loading.attr="disabled" class="w-full justify-center inline-flex items-center px-4 py-2.5 bg-amber-600 rounded-lg font-semibold text-sm text-white hover:bg-amber-700 transition disabled:opacity-50">
-                                    <span wire:loading.remove wire:target="addPlan">Add Plan</span>
-                                    <span wire:loading wire:target="addPlan" class="flex items-center gap-2">
-                                        <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
-                                        Adding...
-                                    </span>
-                                </button>
+                                <x-input-label :value="__('Description')" />
+                                <x-text-input class="block mt-1.5 w-full" type="text" wire:model="tier3Description" required />
+                                @error('tier3Description') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                             </div>
                         </div>
-                        <div class="mt-3">
-                            <x-text-input class="block w-full" type="text" wire:model="newPlanDescription" placeholder="Description (optional)" />
-                        </div>
-                    </form>
-                </div>
+                        <p class="text-xs text-gray-500 mt-3">Tier 3 has unlimited posts and categories. Requires company name + CAC document.</p>
+                    </div>
+
+                    <div class="flex justify-end pt-4 border-t border-gray-100">
+                        <button type="submit" wire:loading.attr="disabled" class="inline-flex items-center px-5 py-2.5 bg-amber-600 border border-transparent rounded-lg font-semibold text-sm text-white hover:bg-amber-700 focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 transition disabled:opacity-50">
+                            <span wire:loading.remove wire:target="saveTierSettings">Save Tier Settings</span>
+                            <span wire:loading wire:target="saveTierSettings" class="flex items-center gap-2">
+                                <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+                                Saving...
+                            </span>
+                        </button>
+                    </div>
+                </form>
             </div>
 
             {{-- Featured Listings Settings --}}
@@ -192,7 +206,7 @@
                         </div>
                         <div>
                             <h3 class="text-base font-bold text-slate-900">Featured Listings Settings</h3>
-                            <p class="text-sm text-gray-500">Configure how premium merchant listings rotate on the home page.</p>
+                            <p class="text-sm text-gray-500">Configure how featured listings rotate on the home page.</p>
                         </div>
                     </div>
                 </div>
@@ -201,7 +215,7 @@
                         <div>
                             <x-input-label for="maxPerMerchant" :value="__('Max Listings Per Merchant')" />
                             <x-text-input id="maxPerMerchant" class="block mt-1.5 w-full" type="number" wire:model="maxPerMerchant" min="1" max="100" required />
-                            <p class="mt-1 text-xs text-gray-400">Maximum number of listings pulled from each premium merchant.</p>
+                            <p class="mt-1 text-xs text-gray-400">Maximum number of listings pulled from each merchant.</p>
                             @error('maxPerMerchant') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                         </div>
 

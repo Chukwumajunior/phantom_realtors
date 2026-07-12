@@ -5,6 +5,8 @@
 
     <div class="py-8">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <x-posting-policy />
+
             <form action="{{ route('merchant.services.store') }}" method="POST" enctype="multipart/form-data" class="space-y-8">
                 @csrf
 
@@ -110,6 +112,11 @@
                             @error('service_area') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                         </div>
                     </div>
+                </div>
+
+                <!-- Location Section -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                    <x-location-fields prefix="location_" />
                 </div>
 
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">

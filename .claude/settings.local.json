@@ -31,7 +31,8 @@
       "Bash(nslookup:*)",
       "Bash(curl:*)",
       "Bash(php test_home.php:*)",
-      "Bash(ls -la \"C:\\\\Users\\\\HP\\\\Personal work\\\\phantom-realtors\\\\app\\\\Livewire\\\\Merchant\"\" 2>/dev/null || echo \"Directory might not exist yet \")"
+      "Bash(ls -la \"C:\\\\Users\\\\HP\\\\Personal work\\\\phantom-realtors\\\\app\\\\Livewire\\\\Merchant\"\" 2>/dev/null || echo \"Directory might not exist yet \")",
+      "Bash(wc:*)"
     ]
   }
 }

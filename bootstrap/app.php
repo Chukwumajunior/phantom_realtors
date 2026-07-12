@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Middleware\EnsureActiveSubscription;
-use App\Http\Middleware\EnsureMerchantApproved;
+use App\Http\Middleware\EnforceTierLimits;
+use App\Http\Middleware\EnsurePosterProfile;
 use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -16,8 +16,8 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'role' => RoleMiddleware::class,
-            'merchant.approved' => EnsureMerchantApproved::class,
-            'subscription.active' => EnsureActiveSubscription::class,
+            'poster.profile' => EnsurePosterProfile::class,
+            'tier.limits' => EnforceTierLimits::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

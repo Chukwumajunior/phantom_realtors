@@ -41,6 +41,12 @@ class ProductFactory extends Factory
             'listing_status' => ListingStatus::Active,
             'brand' => fake()->randomElement(['LG', 'Samsung', 'Dangote', 'Generic', 'Premium', null]),
             'condition' => fake()->randomElement(['new', 'used', 'refurbished']),
+            'location_house_number' => fake()->buildingNumber(),
+            'location_street_name' => fake()->streetName(),
+            'location_area' => fake()->randomElement(['Bariga', 'Surulere', 'Ikeja', 'Yaba', 'Lekki', 'Ajah', 'Victoria Island']),
+            'location_lga' => fake()->randomElement(['Somolu', 'Surulere', 'Ikeja', 'Lagos Mainland', 'Eti-Osa', 'Alimosho']),
+            'location_state' => fake()->randomElement(['Lagos', 'Abuja', 'Rivers', 'Ogun', 'Oyo']),
+            'location_country' => 'Nigeria',
             'is_featured' => fake()->boolean(20),
             'views_count' => fake()->numberBetween(0, 200),
         ];

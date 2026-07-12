@@ -71,4 +71,48 @@ class SiteConfig extends Model
             'services_per_row' => 3,
         ], static::get('featured_settings', []));
     }
+
+    /**
+     * Get tier pricing and configuration.
+     */
+    public static function getTierSettings(): array
+    {
+        return array_merge([
+            'tier_2_price' => 10000,
+            'tier_3_price' => 25000,
+            'tier_1' => [
+                'name' => 'Tier 1 - Basic',
+                'posts' => 1,
+                'categories' => 1,
+                'description' => '1 post in 1 category. Perfect for getting started.',
+            ],
+            'tier_2' => [
+                'name' => 'Tier 2 - Standard',
+                'posts' => 3,
+                'categories' => 3,
+                'description' => 'Up to 3 posts across 3 categories. Great for growing businesses.',
+            ],
+            'tier_3' => [
+                'name' => 'Tier 3 - Unlimited',
+                'posts' => null,
+                'categories' => null,
+                'description' => 'Unlimited posts and categories. For established businesses.',
+            ],
+        ], static::get('tier_settings', []));
+    }
+
+    /**
+     * Get the price for a specific tier.
+     */
+    public static function getTierPrice(string $tier): int
+    {
+        $settings = static::getTierSettings();
+
+        return match ($tier) {
+            'tier_1' => 0,
+            'tier_2' => (int) ($settings['tier_2_price'] ?? 10000),
+            'tier_3' => (int) ($settings['tier_3_price'] ?? 25000),
+            default => 0,
+        };
+    }
 }

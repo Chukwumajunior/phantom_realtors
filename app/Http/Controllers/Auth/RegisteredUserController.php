@@ -10,7 +10,6 @@ use App\Notifications\WelcomeNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
@@ -44,8 +43,6 @@ class RegisteredUserController extends Controller
 
         $user->notify(new WelcomeNotification);
 
-        Auth::login($user);
-
-        return redirect()->route('home')->with('success', 'Welcome to Phantom 5! Your account has been created successfully.');
+        return redirect()->route('login')->with('status', 'Account created successfully! Please check your email to verify your account, then log in.');
     }
 }
