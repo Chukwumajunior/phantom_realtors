@@ -19,6 +19,17 @@
             @endif
 
             <!-- Current Tier Display -->
+            @if(\App\Models\SiteConfig::isFreeMode())
+            <div class="mb-6 bg-green-50 border border-green-200 rounded-xl p-5">
+                <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-green-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <div>
+                        <h4 class="font-semibold text-green-800">Free Mode Active</h4>
+                        <p class="text-sm text-green-700 mt-0.5">All tier restrictions are currently disabled. You can upload unlimited products, properties, and services for free.</p>
+                    </div>
+                </div>
+            </div>
+            @else
             <div class="mb-6 bg-white rounded-xl p-6 shadow-sm border border-gray-100">
                 <div class="flex items-center justify-between">
                     <div>
@@ -39,6 +50,7 @@
                     @endif
                 </div>
             </div>
+            @endif
 
             <form action="{{ route('merchant.profile.update') }}" method="POST" enctype="multipart/form-data" class="space-y-8"
                 x-data="{ selectedTier: '{{ old('tier', $profile->tier->value) }}' }">
@@ -46,7 +58,7 @@
                 @method('PATCH')
 
                 <!-- Tier Upgrade Section -->
-                @if($profile->tier !== \App\Enums\PosterTier::Tier3 && $profile->isApproved())
+                @if(!(\App\Models\SiteConfig::isFreeMode()) && $profile->tier !== \App\Enums\PosterTier::Tier3 && $profile->isApproved())
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                     <h3 class="text-lg font-bold text-slate-900 mb-4">Upgrade Tier</h3>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -57,12 +69,12 @@
                         <label class="cursor-pointer {{ $isLowerTier ? 'pointer-events-none' : '' }}">
                             <input type="radio" name="tier" value="{{ $tier->value }}" x-model="selectedTier" class="sr-only peer"
                                 {{ $isLowerTier ? 'disabled' : '' }}>
-                            <div class="border-2 rounded-xl p-4 transition-all peer-checked:border-amber-500 peer-checked:bg-amber-50 hover:border-gray-300
+                            <div class="h-full flex flex-col border-2 rounded-xl p-4 transition-all peer-checked:border-amber-500 peer-checked:bg-amber-50 hover:border-gray-300
                                 {{ $isLowerTier ? 'opacity-50' : '' }}"
                                 :class="selectedTier === '{{ $tier->value }}' ? 'border-amber-500 bg-amber-50' : 'border-gray-200'">
                                 <div class="font-semibold text-slate-800">{{ $tier->label() }}</div>
-                                <p class="text-xs text-gray-500 mt-1">{{ $tier->description() }}</p>
-                                <div class="mt-2 text-xs font-medium {{ $tier->isFree() ? 'text-green-600' : 'text-amber-600' }}">
+                                <p class="text-xs text-gray-500 mt-1 flex-1">{{ $tier->description() }}</p>
+                                <div class="mt-3 text-xs font-medium {{ $tier->isFree() ? 'text-green-600' : 'text-amber-600' }}">
                                     @if($tier->isFree())
                                         FREE
                                     @else
@@ -163,7 +175,7 @@
                         </div>
 
                         <!-- Tier 3 Only Fields -->
-                        <div x-show="selectedTier === 'tier_3'" x-transition class="space-y-4 border-t pt-4">
+                        <div x-show="!{{ \App\Models\SiteConfig::isFreeMode() ? 'true' : 'false' }} && selectedTier === 'tier_3'" x-transition class="space-y-4 border-t pt-4">
                             <h4 class="font-medium text-slate-700">Tier 3 Requirements</h4>
 
                             <div>

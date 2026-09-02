@@ -1,3 +1,11 @@
+@if(\App\Models\SiteConfig::isFreeMode())
+<div class="mb-6 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-5">
+    <div class="flex items-center gap-3">
+        <svg class="w-5 h-5 text-green-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <p class="text-sm font-medium text-green-800">Free mode is active — you can upload unlimited products, properties, and services.</p>
+    </div>
+</div>
+@else
 <div class="mb-6 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-xl p-5">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -15,3 +23,4 @@
         </a>
     </div>
 </div>
+@endif

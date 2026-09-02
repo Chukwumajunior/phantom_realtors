@@ -51,7 +51,7 @@
                             @endif
                         </p>
                     </div>
-                    @if($tier !== \App\Enums\PosterTier::Tier3)
+                    @if(!(\App\Models\SiteConfig::isFreeMode()) && $tier !== \App\Enums\PosterTier::Tier3)
                         <a href="{{ route('merchant.profile.edit') }}" class="px-4 py-2 bg-amber-600 text-white text-sm font-medium rounded-lg hover:bg-amber-700 transition text-center shrink-0">
                             Upgrade Tier
                         </a>

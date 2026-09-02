@@ -44,6 +44,22 @@ class SiteConfig extends Model
     }
 
     /**
+     * Check if free mode is enabled (disables all tier restrictions).
+     */
+    public static function isFreeMode(): bool
+    {
+        return (bool) static::get('free_mode', false);
+    }
+
+    /**
+     * Enable or disable free mode.
+     */
+    public static function setFreeMode(bool $enabled): void
+    {
+        static::set('free_mode', $enabled);
+    }
+
+    /**
      * Get payment/bank account details.
      */
     public static function getBankDetails(): array

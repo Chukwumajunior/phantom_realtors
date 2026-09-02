@@ -150,7 +150,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function canCreatePost(?string $newCategory = null): bool
     {
-        if ($this->isAdmin()) {
+        if ($this->isAdmin() || SiteConfig::isFreeMode()) {
             return true;
         }
 
@@ -184,6 +184,10 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function remainingPosts(): ?int
     {
+        if (SiteConfig::isFreeMode()) {
+            return null; // unlimited
+        }
+
         $profile = $this->merchantProfile;
         if (! $profile) {
             return 0;

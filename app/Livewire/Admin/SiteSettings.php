@@ -12,6 +12,9 @@ class SiteSettings extends Component
     public string $notification = '';
     public string $notificationType = '';
 
+    // Free mode
+    public bool $freeMode = false;
+
     // Bank details
     public string $bank_name = '';
     public string $account_name = '';
@@ -47,6 +50,8 @@ class SiteSettings extends Component
 
     public function mount(): void
     {
+        $this->freeMode = SiteConfig::isFreeMode();
+
         $bankDetails = SiteConfig::getBankDetails();
         $this->bank_name = $bankDetails['bank_name'] ?? '';
         $this->account_name = $bankDetails['account_name'] ?? '';
@@ -78,6 +83,17 @@ class SiteSettings extends Component
         $this->productsPerRow = (int) $featuredSettings['products_per_row'];
         $this->servicesPerPage = (int) $featuredSettings['services_per_page'];
         $this->servicesPerRow = (int) $featuredSettings['services_per_row'];
+    }
+
+    public function toggleFreeMode(): void
+    {
+        $this->freeMode = ! $this->freeMode;
+        SiteConfig::setFreeMode($this->freeMode);
+
+        $this->notification = $this->freeMode
+            ? 'Free mode enabled. All tier restrictions are now removed.'
+            : 'Free mode disabled. Tier-based plans are now active.';
+        $this->notificationType = 'success';
     }
 
     public function saveBankDetails(): void

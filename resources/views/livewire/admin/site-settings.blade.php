@@ -6,10 +6,22 @@
     <div class="py-8">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
 
-            {{-- Notification --}}
+            {{-- Toast Notification --}}
             @if($notification)
-            <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)" x-transition>
-                <div class="flex items-center gap-3 p-4 rounded-xl border {{ $notificationType === 'success' ? 'bg-green-50 border-green-200 text-green-700' : 'bg-red-50 border-red-200 text-red-700' }}">
+            <div
+                wire:key="toast-{{ md5($notification . now()) }}"
+                x-data="{ show: true }"
+                x-show="show"
+                x-init="setTimeout(() => { show = false; $wire.set('notification', '') }, 5000)"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 translate-y-2"
+                x-transition:enter-end="opacity-100 translate-y-0"
+                x-transition:leave="transition ease-in duration-200"
+                x-transition:leave-start="opacity-100 translate-y-0"
+                x-transition:leave-end="opacity-0 translate-y-2"
+                class="fixed bottom-6 right-6 z-50 max-w-sm"
+            >
+                <div class="flex items-center gap-3 p-4 rounded-xl border shadow-lg {{ $notificationType === 'success' ? 'bg-green-50 border-green-200 text-green-700' : 'bg-red-50 border-red-200 text-red-700' }}">
                     @if($notificationType === 'success')
                         <svg class="w-5 h-5 text-green-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     @else
@@ -22,6 +34,45 @@
                 </div>
             </div>
             @endif
+
+            {{-- Free Mode Toggle --}}
+            <div class="bg-white rounded-2xl shadow-sm border {{ $freeMode ? 'border-green-300 ring-2 ring-green-100' : 'border-gray-100' }} overflow-hidden">
+                <div class="px-6 sm:px-8 py-5">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-lg {{ $freeMode ? 'bg-green-50' : 'bg-gray-100' }} flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5 {{ $freeMode ? 'text-green-600' : 'text-gray-500' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                            </div>
+                            <div>
+                                <h3 class="text-base font-bold text-slate-900">Free Mode</h3>
+                                <p class="text-sm text-gray-500">Disable all tier restrictions and make the app free for everyone.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            @if($freeMode)
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-800">ACTIVE</span>
+                            @else
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-gray-100 text-gray-600">OFF</span>
+                            @endif
+                            <button
+                                wire:click="toggleFreeMode"
+                                wire:loading.attr="disabled"
+                                type="button"
+                                class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 {{ $freeMode ? 'bg-green-500' : 'bg-gray-200' }}"
+                                role="switch"
+                                aria-checked="{{ $freeMode ? 'true' : 'false' }}"
+                            >
+                                <span class="pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out {{ $freeMode ? 'translate-x-5' : 'translate-x-0' }}"></span>
+                            </button>
+                        </div>
+                    </div>
+                    @if($freeMode)
+                    <div class="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+                        <p class="text-sm text-green-700">All merchants can upload unlimited products, properties, and services for free. Tier-based restrictions are suspended. Toggle off to restore normal plans.</p>
+                    </div>
+                    @endif
+                </div>
+            </div>
 
             {{-- Bank Account Details --}}
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
@@ -70,6 +121,7 @@
             </div>
 
             {{-- Tier Configuration --}}
+            @if(!$freeMode)
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 <div class="px-6 sm:px-8 py-5 border-b border-gray-100">
                     <div class="flex items-center gap-3">
@@ -196,6 +248,7 @@
                     </div>
                 </form>
             </div>
+            @endif
 
             {{-- Featured Listings Settings --}}
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
