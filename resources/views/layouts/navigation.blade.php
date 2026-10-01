@@ -7,6 +7,7 @@
                 </a>
 
                 <div class="hidden sm:flex sm:ml-10 sm:space-x-6">
+                    <a wire:navigate href="{{ route('home') }}" class="text-sm text-gray-300 hover:text-white transition {{ request()->routeIs('home') ? 'text-white' : '' }}">Home</a>
                     <a wire:navigate href="{{ route('properties.index') }}" class="text-sm text-gray-300 hover:text-white transition {{ request()->routeIs('properties.*') ? 'text-white' : '' }}">Properties</a>
                     <a wire:navigate href="{{ route('products.index') }}" class="text-sm text-gray-300 hover:text-white transition {{ request()->routeIs('products.*') ? 'text-white' : '' }}">Products</a>
                     <a wire:navigate href="{{ route('services.index') }}" class="text-sm text-gray-300 hover:text-white transition {{ request()->routeIs('services.*') ? 'text-white' : '' }}">Services</a>
@@ -108,6 +109,7 @@
     <!-- Mobile menu -->
     <div :class="{'block': open, 'hidden': !open}" class="hidden sm:hidden bg-slate-800">
         <div class="px-4 py-3 space-y-2">
+            <a wire:navigate href="{{ route('home') }}" class="block text-sm text-gray-300 hover:text-white py-1">Home</a>
             <a wire:navigate href="{{ route('properties.index') }}" class="block text-sm text-gray-300 hover:text-white py-1">Properties</a>
             <a wire:navigate href="{{ route('products.index') }}" class="block text-sm text-gray-300 hover:text-white py-1">Products</a>
             <a wire:navigate href="{{ route('services.index') }}" class="block text-sm text-gray-300 hover:text-white py-1">Services</a>
